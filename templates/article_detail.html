@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Article | Education Excellence Hub</title>
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- AOS -->
+    <link href="https://unpkg.com/aos@next/dist/aos.css" rel="stylesheet">
+</head>
+
+<body>
+
+<!-- ================= NAVBAR ================= -->
+<header class="navbar">
+    <div class="logo">Education <span>Excellence</span> Hub</div>
+
+    <nav>
+        <ul>
+            <li><a href="home.html">Home</a></li>
+            <li><a href="#">Blog</a></li>
+            <li><a href="#">Courses</a></li>
+            <li><a href="#">Resources</a></li>
+        </ul>
+    </nav>
+
+    <div class="nav-actions">
+        <button id="darkToggle">🌙</button>
+    </div>
+</header>
+
+<!-- ================= READING PROGRESS BAR ================= -->
+<div class="progress-container">
+    <div id="progressBar"></div>
+</div>
+
+<!-- ================= ARTICLE HERO ================= -->
+<section class="article-hero" data-aos="fade-up">
+
+    <div class="article-category">Language Learning</div>
+
+    <h1 class="article-title">
+        Mastering French in 90 Days: A Complete Strategy Guide
+    </h1>
+
+    <div class="article-meta">
+        <span>By Dr. Marie Laurent</span>
+        <span>•</span>
+        <span>June 2026</span>
+        <span>•</span>
+        <span>8 min read</span>
+    </div>
+
+    <div class="article-share">
+        <button>Share</button>
+        <button>Bookmark</button>
+    </div>
+
+    <img src="https://source.unsplash.com/1200x600/?french,study" alt="Article Image">
+
+</section>
+
+<!-- ================= ARTICLE CONTENT ================= -->
+<main class="article-container">
+
+    <article class="article-content" data-aos="fade-up">
+
+        <p>
+            Learning French can be a transformative experience that opens doors to global opportunities.
+            This guide provides a structured approach to mastering the language efficiently.
+        </p>
+
+        <h2>1. Build Strong Foundations</h2>
+        <p>
+            Start with grammar, pronunciation, and essential vocabulary. Consistency is key.
+        </p>
+
+        <blockquote>
+            “Language learning is not a sprint, but a daily discipline.”
+        </blockquote>
+
+        <h2>2. Daily Practice Strategy</h2>
+        <p>
+            Dedicate at least 1 hour daily to listening, speaking, reading, and writing.
+        </p>
+
+        <img src="https://source.unsplash.com/900x500/?study,notes" alt="Study Notes">
+
+        <h2>3. Immersive Learning</h2>
+        <p>
+            Surround yourself with French media such as films, podcasts, and conversations.
+        </p>
+
+        <h2>4. Practice with Experts</h2>
+        <p>
+            Engage in live sessions with qualified instructors for feedback and correction.
+        </p>
+
+    </article>
+
+    <!-- ================= SIDEBAR ================= -->
+    <aside class="article-sidebar">
+
+        <!-- AUTHOR PROFILE -->
+        <div class="author-box">
+            <img src="https://source.unsplash.com/200x200/?teacher,portrait" alt="Author">
+
+            <h3>Dr. Marie Laurent</h3>
+            <p>French Language Specialist</p>
+            <p>15+ Years Experience</p>
+
+            <button>View Profile</button>
+        </div>
+
+        <!-- RELATED ARTICLES -->
+        <div class="sidebar-section">
+            <h3>Related Articles</h3>
+
+            <div class="related-item">
+                <p>How to Pass DELF B1 Easily</p>
+            </div>
+
+            <div class="related-item">
+                <p>Top 10 French Learning Tips</p>
+            </div>
+
+            <div class="related-item">
+                <p>Common French Mistakes</p>
+            </div>
+        </div>
+
+        <!-- QUICK LINKS -->
+        <div class="sidebar-section">
+            <h3>Quick Tools</h3>
+
+            <button>Save Article</button>
+            <button>Download PDF</button>
+            <button>Ask AI Tutor</button>
+        </div>
+
+    </aside>
+
+</main>
+
+<!-- ================= COMMENTS SECTION ================= -->
+<section class="comments-section">
+
+    <h2>Discussion</h2>
+
+    <form class="comment-form">
+        <input type="text" placeholder="Your Name">
+        <textarea placeholder="Write your comment..."></textarea>
+        <button>Post Comment</button>
+    </form>
+
+    <div class="comments-list">
+
+        <div class="comment">
+            <h4>John K.</h4>
+            <p>This article really helped me understand French basics!</p>
+        </div>
+
+        <div class="comment">
+            <h4>Sarah M.</h4>
+            <p>Great explanation of daily practice strategies.</p>
+        </div>
+
+    </div>
+
+</section>
+
+<!-- ================= RELATED ARTICLES ================= -->
+<section class="related-articles">
+
+    <h2>Recommended for You</h2>
+
+    <div class="grid-3">
+
+        <div class="card">
+            <img src="https://source.unsplash.com/600x400/?language,learning" alt="">
+            <h3>French Speaking Practice Tips</h3>
+        </div>
+
+        <div class="card">
+            <img src="https://source.unsplash.com/600x400/?exam,study" alt="">
+            <h3>DELF Exam Preparation Guide</h3>
+        </div>
+
+        <div class="card">
+            <img src="https://source.unsplash.com/600x400/?education,books" alt="">
+            <h3>Best Study Resources Online</h3>
+        </div>
+
+    </div>
+
+</section>
+
+<!-- ================= FOOTER ================= -->
+<footer class="footer">
+    <p>© 2026 Education Excellence Hub. All rights reserved.</p>
+</footer>
+
+<!-- ================= SCRIPTS ================= -->
+<script src="main.js"></script>
+
+<script>
+/* =========================
+   READING PROGRESS BAR
+========================= */
+window.addEventListener("scroll", () => {
+    const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+    const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    const scrolled = (winScroll / height) * 100;
+
+    document.getElementById("progressBar").style.width = scrolled + "%";
+});
+</script>
+
+</body>
+</html>
