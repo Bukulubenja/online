@@ -1,225 +1,294 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Article | Education Excellence Hub</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+<title>Article - French Fluency Journal</title>
 
-    <!-- CSS -->
-    <link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 
-    <!-- AOS -->
-    <link href="https://unpkg.com/aos@next/dist/aos.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+
+<style>
+
+/* =========================
+   BASE
+========================= */
+
+:root{
+--navy:#0A2342;
+--blue:#0055A4;
+--gold:#D4AF37;
+--text:#1A1A1A;
+--bg:#FAFAFA;
+}
+
+body{
+margin:0;
+font-family:Inter;
+background:var(--bg);
+color:var(--text);
+line-height:1.8;
+overflow-x:hidden;
+}
+
+/* =========================
+   PROGRESS BAR
+========================= */
+
+.progress-bar{
+position:fixed;
+top:0;
+left:0;
+height:4px;
+width:0%;
+background:linear-gradient(90deg,var(--blue),var(--gold));
+z-index:9999;
+}
+
+/* =========================
+   LAYOUT
+========================= */
+
+.container{
+display:grid;
+grid-template-columns:1fr 250px;
+gap:60px;
+max-width:1200px;
+margin:auto;
+padding:120px 5%;
+}
+
+/* =========================
+   ARTICLE CONTENT
+========================= */
+
+.article h1{
+font-family:"Playfair Display";
+font-size:3rem;
+margin-bottom:20px;
+}
+
+.meta{
+color:#777;
+margin-bottom:40px;
+}
+
+.article img{
+width:100%;
+border-radius:20px;
+margin:30px 0;
+}
+
+.article p{
+font-size:1.1rem;
+margin-bottom:20px;
+}
+
+blockquote{
+border-left:4px solid var(--blue);
+padding-left:20px;
+font-style:italic;
+color:#444;
+margin:30px 0;
+}
+
+/* Notion-style block */
+.callout{
+background:white;
+padding:20px;
+border-radius:15px;
+box-shadow:0 10px 30px rgba(0,0,0,0.05);
+margin:30px 0;
+}
+
+/* =========================
+   SIDEBAR (TOC)
+========================= */
+
+.toc{
+position:sticky;
+top:120px;
+height:fit-content;
+}
+
+.toc h3{
+margin-bottom:15px;
+font-size:14px;
+text-transform:uppercase;
+letter-spacing:1px;
+color:#666;
+}
+
+.toc a{
+display:block;
+text-decoration:none;
+color:#333;
+margin-bottom:10px;
+font-size:14px;
+transition:.3s;
+}
+
+.toc a:hover{
+color:var(--blue);
+transform:translateX(5px);
+}
+
+/* =========================
+   HERO IMAGE
+========================= */
+
+.hero-img{
+height:400px;
+border-radius:25px;
+background:url('blog.jpg') center/cover;
+margin-bottom:40px;
+}
+
+/* =========================
+   SECTIONS
+========================= */
+
+section{
+opacity:0;
+transform:translateY(40px);
+transition:all 1s ease;
+}
+
+section.show{
+opacity:1;
+transform:translateY(0);
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media(max-width:900px){
+
+.container{
+grid-template-columns:1fr;
+}
+
+.toc{
+display:none;
+}
+
+.article h1{
+font-size:2.2rem;
+}
+
+}
+
+</style>
 </head>
 
 <body>
 
-<!-- ================= NAVBAR ================= -->
-<header class="navbar">
-    <div class="logo">Education <span>Excellence</span> Hub</div>
+<div class="progress-bar"></div>
 
-    <nav>
-        <ul>
-            <li><a href="home.html">Home</a></li>
-            <li><a href="#">Blog</a></li>
-            <li><a href="#">Courses</a></li>
-            <li><a href="#">Resources</a></li>
-        </ul>
-    </nav>
+<div class="container">
 
-    <div class="nav-actions">
-        <button id="darkToggle">🌙</button>
-    </div>
-</header>
+<!-- ARTICLE -->
+<div class="article">
 
-<!-- ================= READING PROGRESS BAR ================= -->
-<div class="progress-container">
-    <div id="progressBar"></div>
+<section>
+<h1>Master French Verbs Faster</h1>
+<div class="meta">8 min read • Grammar • June 2026</div>
+
+<div class="hero-img"></div>
+
+<p>
+Learning French verbs is one of the most challenging parts of mastering the language.
+But with the right structure, it becomes intuitive.
+</p>
+
+<div class="callout">
+💡 Tip: Focus on patterns, not memorization.
 </div>
 
-<!-- ================= ARTICLE HERO ================= -->
-<section class="article-hero" data-aos="fade-up">
+<p>
+French verbs follow predictable groups that make learning easier once understood.
+</p>
 
-    <div class="article-category">Language Learning</div>
+<blockquote>
+“Consistency beats intensity when learning a language.”
+</blockquote>
 
-    <h1 class="article-title">
-        Mastering French in 90 Days: A Complete Strategy Guide
-    </h1>
+<h2 id="section1">1. Understand Verb Groups</h2>
 
-    <div class="article-meta">
-        <span>By Dr. Marie Laurent</span>
-        <span>•</span>
-        <span>June 2026</span>
-        <span>•</span>
-        <span>8 min read</span>
-    </div>
+<p>
+French verbs are divided into three main groups...
+</p>
 
-    <div class="article-share">
-        <button>Share</button>
-        <button>Bookmark</button>
-    </div>
+<img src="https://unsplash.com/photos/a-group-of-people-in-a-room-with-a-projector-screen-1-aA2Fadydc">
 
-    <img src="https://source.unsplash.com/1200x600/?french,study" alt="Article Image">
+<h2 id="section2">2. Learn High-Frequency Verbs</h2>
 
-</section>
+<p>
+Start with être, avoir, aller, faire...
+</p>
 
-<!-- ================= ARTICLE CONTENT ================= -->
-<main class="article-container">
+<div class="callout">
+✔ Focus on the top 20 verbs first.
+</div>
 
-    <article class="article-content" data-aos="fade-up">
+<h2 id="section3">3. Practice in Context</h2>
 
-        <p>
-            Learning French can be a transformative experience that opens doors to global opportunities.
-            This guide provides a structured approach to mastering the language efficiently.
-        </p>
-
-        <h2>1. Build Strong Foundations</h2>
-        <p>
-            Start with grammar, pronunciation, and essential vocabulary. Consistency is key.
-        </p>
-
-        <blockquote>
-            “Language learning is not a sprint, but a daily discipline.”
-        </blockquote>
-
-        <h2>2. Daily Practice Strategy</h2>
-        <p>
-            Dedicate at least 1 hour daily to listening, speaking, reading, and writing.
-        </p>
-
-        <img src="https://source.unsplash.com/900x500/?study,notes" alt="Study Notes">
-
-        <h2>3. Immersive Learning</h2>
-        <p>
-            Surround yourself with French media such as films, podcasts, and conversations.
-        </p>
-
-        <h2>4. Practice with Experts</h2>
-        <p>
-            Engage in live sessions with qualified instructors for feedback and correction.
-        </p>
-
-    </article>
-
-    <!-- ================= SIDEBAR ================= -->
-    <aside class="article-sidebar">
-
-        <!-- AUTHOR PROFILE -->
-        <div class="author-box">
-            <img src="https://source.unsplash.com/200x200/?teacher,portrait" alt="Author">
-
-            <h3>Dr. Marie Laurent</h3>
-            <p>French Language Specialist</p>
-            <p>15+ Years Experience</p>
-
-            <button>View Profile</button>
-        </div>
-
-        <!-- RELATED ARTICLES -->
-        <div class="sidebar-section">
-            <h3>Related Articles</h3>
-
-            <div class="related-item">
-                <p>How to Pass DELF B1 Easily</p>
-            </div>
-
-            <div class="related-item">
-                <p>Top 10 French Learning Tips</p>
-            </div>
-
-            <div class="related-item">
-                <p>Common French Mistakes</p>
-            </div>
-        </div>
-
-        <!-- QUICK LINKS -->
-        <div class="sidebar-section">
-            <h3>Quick Tools</h3>
-
-            <button>Save Article</button>
-            <button>Download PDF</button>
-            <button>Ask AI Tutor</button>
-        </div>
-
-    </aside>
-
-</main>
-
-<!-- ================= COMMENTS SECTION ================= -->
-<section class="comments-section">
-
-    <h2>Discussion</h2>
-
-    <form class="comment-form">
-        <input type="text" placeholder="Your Name">
-        <textarea placeholder="Write your comment..."></textarea>
-        <button>Post Comment</button>
-    </form>
-
-    <div class="comments-list">
-
-        <div class="comment">
-            <h4>John K.</h4>
-            <p>This article really helped me understand French basics!</p>
-        </div>
-
-        <div class="comment">
-            <h4>Sarah M.</h4>
-            <p>Great explanation of daily practice strategies.</p>
-        </div>
-
-    </div>
+<p>
+Use verbs in real sentences instead of isolated memorization.
+</p>
 
 </section>
 
-<!-- ================= RELATED ARTICLES ================= -->
-<section class="related-articles">
+</div>
 
-    <h2>Recommended for You</h2>
+<!-- SIDEBAR -->
+<div class="toc">
 
-    <div class="grid-3">
+<h3>Contents</h3>
 
-        <div class="card">
-            <img src="https://source.unsplash.com/600x400/?language,learning" alt="">
-            <h3>French Speaking Practice Tips</h3>
-        </div>
+<a href="#section1">Verb Groups</a>
+<a href="#section2">High-Frequency Verbs</a>
+<a href="#section3">Practice Context</a>
 
-        <div class="card">
-            <img src="https://source.unsplash.com/600x400/?exam,study" alt="">
-            <h3>DELF Exam Preparation Guide</h3>
-        </div>
+</div>
 
-        <div class="card">
-            <img src="https://source.unsplash.com/600x400/?education,books" alt="">
-            <h3>Best Study Resources Online</h3>
-        </div>
-
-    </div>
-
-</section>
-
-<!-- ================= FOOTER ================= -->
-<footer class="footer">
-    <p>© 2026 Education Excellence Hub. All rights reserved.</p>
-</footer>
-
-<!-- ================= SCRIPTS ================= -->
-<script src="main.js"></script>
+</div>
 
 <script>
-/* =========================
-   READING PROGRESS BAR
-========================= */
-window.addEventListener("scroll", () => {
-    const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-    const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-    const scrolled = (winScroll / height) * 100;
 
-    document.getElementById("progressBar").style.width = scrolled + "%";
+/* =========================
+   SCROLL PROGRESS BAR
+========================= */
+
+window.addEventListener("scroll", () => {
+    const scrollTop = document.documentElement.scrollTop;
+    const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = (scrollTop / scrollHeight) * 100;
+
+    document.querySelector(".progress-bar").style.width = progress + "%";
 });
+
+
+/* =========================
+   SECTION REVEAL
+========================= */
+
+gsap.utils.toArray("section").forEach(section => {
+    gsap.to(section, {
+        scrollTrigger: {
+            trigger: section,
+            start: "top 85%"
+        },
+        opacity: 1,
+        y: 0,
+        duration: 1
+    });
+});
+
 </script>
 
 </body>

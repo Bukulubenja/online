@@ -607,6 +607,34 @@ h1, h2, h3, h4 {
    RESPONSIVE DESIGN (UPGRADED MOBILE NAVIGATION)
 =================================================== */
 
+ @media (max-width: 992px) {
+            .nav-menu-wrapper {
+                position: fixed;
+                top: 70px; left: -100%;
+                flex-direction: column;
+                background: white;
+                width: 100%; height: calc(100vh - 70px);
+                padding: 40px;
+                transition: 0.4s;
+                justify-content: flex-start;
+                box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            }
+            .nav-menu-wrapper.is-active { left: 0; }
+            .navbar ul { flex-direction: column; width: 100%; text-align: center; }
+            .nav-actions { flex-direction: column; width: 100%; }
+            .menu-toggle { display: flex; }
+            
+            .hero { text-align: center; align-items: center; }
+            .hero-search { width: 100%; }
+            .hero-stats { justify-content: center; }
+        }
+
+        @media (max-width: 600px) {
+            .hero-content h1 { font-size: 1.8rem; }
+            .hero-stats .stat { flex: 1; min-width: 120px; padding: 10px; }
+            .section { padding: 50px 5%; }
+        }
+
 /* TABLETS & SMALL LAPTOPS */
 @media (max-width: 1024px) {
 

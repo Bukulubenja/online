@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Articles | French Fluency Journal</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+
+<style>
+
+/* ======================
+ROOT
+====================== */
+:root{
+--navy:#0A2342;
+--blue:#0055A4;
+--gold:#D4AF37;
+--bg:#FAFAFA;
+--text:#1A1A1A;
+}
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+body{
+font-family:Inter;
+background:var(--bg);
+overflow-x:hidden;
+color:var(--text);
+}
+
+/* ======================
+PAGE TRANSITION OVERLAY
+====================== */
+.transition{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:var(--navy);
+z-index:9999;
+transform:scaleY(1);
+transform-origin:top;
+}
+
+/* ======================
+NAV
+====================== */
+nav{
+position:fixed;
+width:100%;
+top:0;
+z-index:1000;
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:18px 8%;
+background:rgba(255,255,255,0.7);
+backdrop-filter:blur(20px);
+}
+
+.logo{
+font-weight:800;
+font-size:22px;
+font-family:"Playfair Display";
+color:var(--navy);
+}
+
+.logo span{ color:var(--gold); }
+
+/* ======================
+HERO HEADER
+====================== */
+.header{
+height:60vh;
+display:flex;
+align-items:center;
+justify-content:center;
+text-align:center;
+position:relative;
+background:
+linear-gradient(rgba(10,35,66,0.7),rgba(10,35,66,0.7)),
+url("https://images.unsplash.com/photo-1520975682031-a6cfd5c6c1b8") center/cover;
+color:white;
+}
+
+.header h1{
+font-size:4rem;
+font-family:"Playfair Display";
+}
+
+/* ======================
+FILTER BAR (APPLE STYLE)
+====================== */
+.filters{
+position:sticky;
+top:70px;
+background:white;
+padding:20px 8%;
+display:flex;
+gap:15px;
+overflow-x:auto;
+box-shadow:0 10px 30px rgba(0,0,0,0.05);
+z-index:900;
+}
+
+.filter{
+padding:10px 18px;
+border-radius:40px;
+background:#f2f2f2;
+cursor:pointer;
+white-space:nowrap;
+transition:.3s;
+}
+
+.filter:hover,
+.filter.active{
+background:var(--blue);
+color:white;
+}
+
+/* ======================
+ARTICLES GRID
+====================== */
+.grid{
+padding:80px 8%;
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+gap:40px;
+}
+
+.card{
+background:white;
+border-radius:25px;
+overflow:hidden;
+box-shadow:0 20px 60px rgba(0,0,0,0.08);
+transition:.5s;
+cursor:pointer;
+transform:translateY(0);
+}
+
+.card:hover{
+transform:translateY(-12px) scale(1.01);
+}
+
+.image{
+height:220px;
+background-size:cover;
+background-position:center;
+}
+
+.content{
+padding:25px;
+}
+
+.tag{
+display:inline-block;
+padding:6px 14px;
+border-radius:20px;
+background:var(--blue);
+color:white;
+font-size:12px;
+margin-bottom:10px;
+}
+
+h3{
+font-family:"Playfair Display";
+margin-bottom:10px;
+}
+
+.meta{
+font-size:13px;
+color:#777;
+}
+
+/* ======================
+LOAD MORE BUTTON
+====================== */
+.load{
+text-align:center;
+padding:60px;
+}
+
+.load button{
+padding:15px 40px;
+border:none;
+border-radius:40px;
+background:var(--navy);
+color:white;
+cursor:pointer;
+transition:.3s;
+}
+
+.load button:hover{
+background:var(--blue);
+transform:translateY(-3px);
+}
+
+/* ======================
+RESPONSIVE
+====================== */
+@media(max-width:768px){
+
+.header h1{
+font-size:2.5rem;
+}
+
+.filters{
+padding:15px;
+}
+
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- PAGE TRANSITION -->
+<div class="transition" id="transition"></div>
+
+<!-- NAV -->
+<nav>
+<div class="logo">French <span>Fluency</span></div>
+</nav>
+
+<!-- HEADER -->
+<section class="header">
+<h1>Explore Articles</h1>
+</section>
+
+<!-- FILTERS -->
+<div class="filters">
+
+<div class="filter active">All</div>
+<div class="filter">Grammar</div>
+<div class="filter">Vocabulary</div>
+<div class="filter">Pronunciation</div>
+<div class="filter">Culture</div>
+<div class="filter">DELF</div>
+
+</div>
+
+<!-- GRID -->
+<section class="grid">
+
+<div class="card">
+<div class="image" style="background-image:url('https://images.unsplash.com/photo-1520975682031-a6cfd5c6c1b8')"></div>
+<div class="content">
+<div class="tag">Grammar</div>
+<h3>Master French Verb Conjugation</h3>
+<p class="meta">8 min read • 2026</p>
+</div>
+</div>
+
+<div class="card">
+<div class="image" style="background-image:url('https://images.unsplash.com/photo-1520975682031-a6cfd5c6c1b8')"></div>
+<div class="content">
+<div class="tag">Vocabulary</div>
+<h3>100 Essential French Words</h3>
+<p class="meta">12 min read • 2026</p>
+</div>
+</div>
+
+<div class="card">
+<div class="image" style="background-image:url('https://images.unsplash.com/photo-1520975682031-a6cfd5c6c1b8')"></div>
+<div class="content">
+<div class="tag">Culture</div>
+<h3>French Culture Explained</h3>
+<p class="meta">10 min read • 2026</p>
+</div>
+</div>
+
+</section>
+
+<!-- LOAD MORE -->
+<div class="load">
+<button>Load More Articles</button>
+</div>
+
+<script>
+
+/* =========================
+   PAGE TRANSITION (APPLE STYLE)
+========================= */
+window.addEventListener("load", () => {
+    gsap.to("#transition", {
+        scaleY: 0,
+        duration: 1.2,
+        ease: "power4.inOut",
+        transformOrigin: "bottom"
+    });
+});
+
+/* exit transition (optional for navigation) */
+document.querySelectorAll("a").forEach(link=>{
+    link.addEventListener("click", (e)=>{
+        if(link.getAttribute("href") !== "#"){
+            e.preventDefault();
+            gsap.to("#transition", {
+                scaleY: 1,
+                duration: 0.8,
+                ease: "power4.inOut",
+                onComplete: ()=> {
+                    window.location.href = link.href;
+                }
+            });
+        }
+    });
+});
+
+/* =========================
+   CARD ANIMATION
+========================= */
+gsap.from(".card", {
+    opacity:0,
+    y:80,
+    stagger:0.15,
+    duration:1,
+    ease:"power3.out"
+});
+
+/* =========================
+   FILTER INTERACTION
+========================= */
+const filters = document.querySelectorAll(".filter");
+
+filters.forEach(f => {
+    f.addEventListener("click", () => {
+        filters.forEach(x => x.classList.remove("active"));
+        f.classList.add("active");
+
+        gsap.from(".card", {
+            opacity:0,
+            y:50,
+            duration:0.6,
+            stagger:0.1
+        });
+    });
+});
+
+/* =========================
+   HOVER DEPTH EFFECT
+========================= */
+document.querySelectorAll(".card").forEach(card=>{
+    card.addEventListener("mousemove",(e)=>{
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+
+        card.style.transform =
+        `perspective(1000px)
+        rotateX(${(y-rect.height/2)/20}deg)
+        rotateY(${(x-rect.width/2)/20}deg)
+        translateY(-10px)`;
+    });
+
+    card.addEventListener("mouseleave",()=>{
+        card.style.transform="translateY(0)";
+    });
+});
+
+</script>
+
+</body>
+</html>
