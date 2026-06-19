@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>French Fluency Journal - Dashboard</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+
+<style>
+/* =========================
+   GLOBAL
+========================= */
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:Inter, sans-serif;
+}
+
+body{
+  background:#050b18;
+  color:#fff;
+  overflow-x:hidden;
+}
+
+/* animated ambient glow */
+.glow{
+  position:fixed;
+  width:700px;
+  height:700px;
+  background:radial-gradient(circle,#d4af3740,#0a2342 70%);
+  filter:blur(120px);
+  top:-200px;
+  right:-200px;
+  animation:float 10s ease-in-out infinite;
+}
+
+@keyframes float{
+  0%,100%{transform:translateY(0);}
+  50%{transform:translateY(60px);}
+}
+
+/* =========================
+   LAYOUT
+========================= */
+
+.dashboard{
+  display:grid;
+  grid-template-columns:260px 1fr;
+  min-height:100vh;
+}
+
+/* =========================
+   SIDEBAR
+========================= */
+
+.sidebar{
+  background:rgba(255,255,255,0.04);
+  backdrop-filter:blur(20px);
+  border-right:1px solid rgba(255,255,255,0.08);
+  padding:25px;
+  position:sticky;
+  top:0;
+  height:100vh;
+}
+
+.logo{
+  font-family:"Playfair Display";
+  font-size:20px;
+  margin-bottom:30px;
+  color:#d4af37;
+}
+
+.nav-item{
+  padding:12px 15px;
+  margin:8px 0;
+  border-radius:10px;
+  cursor:pointer;
+  transition:0.3s;
+  opacity:0.8;
+}
+
+.nav-item:hover{
+  background:rgba(255,255,255,0.06);
+  transform:translateX(5px);
+  opacity:1;
+}
+
+/* =========================
+   MAIN AREA
+========================= */
+
+.main{
+  padding:30px;
+}
+
+/* topbar */
+.topbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:25px;
+}
+
+.profile{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.avatar{
+  width:42px;
+  height:42px;
+  border-radius:50%;
+  background:linear-gradient(135deg,#d4af37,#b88a2c);
+}
+
+/* =========================
+   HERO CARD
+========================= */
+
+.hero{
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.08);
+  padding:25px;
+  border-radius:18px;
+  backdrop-filter:blur(20px);
+  box-shadow:0 20px 60px rgba(0,0,0,0.4);
+  animation:fadeUp 0.8s ease;
+}
+
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(30px);}
+  to{opacity:1;transform:translateY(0);}
+}
+
+.hero h1{
+  font-family:"Playfair Display";
+  font-size:28px;
+  margin-bottom:10px;
+}
+
+.hero p{
+  opacity:0.7;
+}
+
+/* =========================
+   STATS GRID
+========================= */
+
+.stats{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:15px;
+  margin-top:20px;
+}
+
+.stat{
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.08);
+  padding:18px;
+  border-radius:14px;
+  transition:0.3s;
+}
+
+.stat:hover{
+  transform:translateY(-5px);
+  border-color:#d4af37;
+}
+
+/* =========================
+   CONTENT GRID
+========================= */
+
+.grid{
+  display:grid;
+  grid-template-columns:2fr 1fr;
+  gap:20px;
+  margin-top:20px;
+}
+
+/* lesson cards */
+.card{
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.08);
+  padding:20px;
+  border-radius:16px;
+  backdrop-filter:blur(20px);
+  transition:0.3s;
+}
+
+.card:hover{
+  transform:translateY(-6px);
+  box-shadow:0 25px 60px rgba(0,0,0,0.5);
+  border-color:#d4af37;
+}
+
+/* progress bar */
+.progress{
+  height:8px;
+  background:rgba(255,255,255,0.08);
+  border-radius:50px;
+  overflow:hidden;
+  margin-top:10px;
+}
+
+.bar{
+  height:100%;
+  width:70%;
+  background:linear-gradient(90deg,#d4af37,#b88a2c);
+}
+
+/* lesson list */
+.lesson{
+  display:flex;
+  justify-content:space-between;
+  padding:10px;
+  margin-top:10px;
+  border-radius:10px;
+  transition:0.3s;
+}
+
+.lesson:hover{
+  background:rgba(255,255,255,0.06);
+  transform:scale(1.02);
+}
+
+/* =========================
+   RIGHT PANEL
+========================= */
+
+.right{
+  display:flex;
+  flex-direction:column;
+  gap:15px;
+}
+
+/* =========================
+   ANIMATIONS
+========================= */
+
+.fade{
+  animation:fadeUp 0.8s ease;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media(max-width:900px){
+  .dashboard{
+    grid-template-columns:1fr;
+  }
+
+  .sidebar{
+    display:none;
+  }
+
+  .grid{
+    grid-template-columns:1fr;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="glow"></div>
+
+<div class="dashboard">
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="logo">French Fluency</div>
+
+    <div class="nav-item">🏠 Dashboard</div>
+    <div class="nav-item">📘 Lessons</div>
+    <div class="nav-item">📊 Progress</div>
+    <div class="nav-item">🧠 Vocabulary</div>
+    <div class="nav-item">🎧 Listening</div>
+    <div class="nav-item">💬 Community</div>
+    <div class="nav-item">⚙ Settings</div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+
+    <!-- TOPBAR -->
+    <div class="topbar">
+      <h2>Welcome back, Student</h2>
+      <div class="profile">
+        <div class="avatar"></div>
+        <div>Level: B1</div>
+      </div>
+    </div>
+
+    <!-- HERO -->
+    <div class="hero fade">
+      <h1>Your French Learning Journey</h1>
+      <p>Continue where you left off. Stay consistent and improve daily.</p>
+
+      <div class="stats">
+        <div class="stat">🔥 12 Lessons Completed</div>
+        <div class="stat">⏱ 5h Study Time</div>
+        <div class="stat">📈 70% Progress</div>
+        <div class="stat">🏆 Streak: 6 Days</div>
+      </div>
+    </div>
+
+    <!-- GRID -->
+    <div class="grid">
+
+      <!-- LEFT -->
+      <div class="card fade">
+        <h3>Continue Learning</h3>
+
+        <div class="progress">
+          <div class="bar"></div>
+        </div>
+
+        <div class="lesson">📘 Grammar: Past Tense <span>Continue</span></div>
+        <div class="lesson">🗣 Pronunciation Practice <span>Start</span></div>
+        <div class="lesson">📖 Reading Comprehension <span>Locked</span></div>
+      </div>
+
+      <!-- RIGHT -->
+      <div class="right">
+
+        <div class="card fade">
+          <h3>Daily Challenge</h3>
+          <p>Translate 5 French sentences</p>
+        </div>
+
+        <div class="card fade">
+          <h3>Upcoming Lesson</h3>
+          <p>French Conversation Basics</p>
+        </div>
+
+        <div class="card fade">
+          <h3>Achievement</h3>
+          <p>🏅 Beginner Speaker Unlocked</p>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>French Fluency Journal - Login</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:Inter, sans-serif;
+}
+
+body{
+  height:100vh;
+  overflow:hidden;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#050d1a;
+}
+
+/* Cinematic animated background */
+.bg{
+  position:absolute;
+  width:100%;
+  height:100%;
+  overflow:hidden;
+  z-index:0;
+}
+
+.bg::before{
+  content:"";
+  position:absolute;
+  width:200%;
+  height:200%;
+  background: radial-gradient(circle at 30% 30%, #0A2342, transparent 40%),
+              radial-gradient(circle at 70% 60%, #0055A4, transparent 35%),
+              radial-gradient(circle at 50% 80%, #D4AF37, transparent 30%);
+  animation: moveBg 12s infinite alternate ease-in-out;
+  filter: blur(40px);
+  opacity:0.7;
+}
+
+@keyframes moveBg{
+  from{transform:translate(-10%, -10%) scale(1);}
+  to{transform:translate(10%, 10%) scale(1.1);}
+}
+
+/* Floating particles */
+.particles span{
+  position:absolute;
+  width:6px;
+  height:6px;
+  background:rgba(255,255,255,0.5);
+  border-radius:50%;
+  animation: float 6s infinite ease-in-out;
+}
+
+.particles span:nth-child(odd){
+  background:#D4AF37;
+}
+
+@keyframes float{
+  0%{transform:translateY(0) translateX(0); opacity:0;}
+  50%{opacity:1;}
+  100%{transform:translateY(-120px) translateX(40px); opacity:0;}
+}
+
+/* Login Card */
+.container{
+  position:relative;
+  z-index:2;
+  width:420px;
+  max-width:90%;
+  padding:35px;
+  border-radius:20px;
+  background:rgba(255,255,255,0.06);
+  backdrop-filter:blur(25px);
+  box-shadow:
+    0 20px 60px rgba(0,0,0,0.6),
+    inset 0 1px 0 rgba(255,255,255,0.08);
+  animation: fadeUp 1s ease;
+}
+
+@keyframes fadeUp{
+  from{opacity:0; transform:translateY(40px);}
+  to{opacity:1; transform:translateY(0);}
+}
+
+h1{
+  color:white;
+  font-size:26px;
+  margin-bottom:5px;
+}
+
+p{
+  color:rgba(255,255,255,0.6);
+  font-size:14px;
+  margin-bottom:25px;
+}
+
+/* Input fields */
+.input-group{
+  margin-bottom:18px;
+  position:relative;
+}
+
+input{
+  width:100%;
+  padding:14px 12px;
+  border-radius:12px;
+  border:1px solid rgba(255,255,255,0.1);
+  background:rgba(255,255,255,0.05);
+  color:white;
+  outline:none;
+  transition:0.3s;
+}
+
+input:focus{
+  border-color:#D4AF37;
+  box-shadow:0 0 15px rgba(212,175,55,0.2);
+  transform:scale(1.02);
+}
+
+/* Floating label */
+label{
+  position:absolute;
+  top:12px;
+  left:12px;
+  color:rgba(255,255,255,0.4);
+  font-size:13px;
+  pointer-events:none;
+  transition:0.3s;
+}
+
+input:focus + label,
+input:not(:placeholder-shown) + label{
+  top:-10px;
+  font-size:11px;
+  color:#D4AF37;
+  background:#050d1a;
+  padding:0 5px;
+}
+
+/* Button */
+button{
+  width:100%;
+  padding:14px;
+  border:none;
+  border-radius:12px;
+  background:linear-gradient(135deg,#D4AF37,#b38b2a);
+  color:#000;
+  font-weight:600;
+  cursor:pointer;
+  transition:0.3s;
+  margin-top:10px;
+  box-shadow:0 10px 30px rgba(212,175,55,0.2);
+  position:relative;
+  overflow:hidden;
+}
+
+button:hover{
+  transform:translateY(-2px);
+  box-shadow:0 15px 40px rgba(212,175,55,0.3);
+}
+
+/* ripple effect */
+button::after{
+  content:"";
+  position:absolute;
+  width:0;
+  height:0;
+  top:50%;
+  left:50%;
+  background:rgba(255,255,255,0.3);
+  border-radius:50%;
+  transform:translate(-50%,-50%);
+  transition:width 0.6s,height 0.6s;
+}
+
+button:active::after{
+  width:300px;
+  height:300px;
+}
+
+/* footer links */
+.footer{
+  margin-top:18px;
+  display:flex;
+  justify-content:space-between;
+  font-size:12px;
+  color:rgba(255,255,255,0.5);
+}
+
+.footer a{
+  color:#D4AF37;
+  text-decoration:none;
+}
+
+.footer a:hover{
+  text-decoration:underline;
+}
+
+/* Responsive */
+@media(max-width:500px){
+  .container{
+    padding:25px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="bg"></div>
+
+<div class="particles">
+  <span style="left:10%;top:80%;animation-delay:0s"></span>
+  <span style="left:20%;top:90%;animation-delay:1s"></span>
+  <span style="left:30%;top:85%;animation-delay:2s"></span>
+  <span style="left:60%;top:95%;animation-delay:3s"></span>
+  <span style="left:80%;top:88%;animation-delay:4s"></span>
+</div>
+
+<div class="container">
+
+  <h1>Welcome Back</h1>
+  <p>Continue your journey to French fluency</p>
+
+  <div class="input-group">
+    <input type="email" placeholder=" " required>
+    <label>Email Address</label>
+  </div>
+
+  <div class="input-group">
+    <input type="password" placeholder=" " required>
+    <label>Password</label>
+  </div>
+
+  <button>Sign In</button>
+
+  <div class="footer">
+    <a href="#">Forgot password?</a>
+    <a href="#">Create account</a>
+  </div>
+
+</div>
+
+</body>
+</html>

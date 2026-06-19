@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>French Fluency Journal - Access Portal</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+
+<style>
+/* =========================
+   GLOBAL STYLES
+========================= */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Inter, sans-serif;
+}
+
+body {
+  background: radial-gradient(circle at top, #0a2342, #050b18);
+  color: #fff;
+  overflow-x: hidden;
+}
+
+/* Animated background glow */
+.bg-glow {
+  position: fixed;
+  width: 600px;
+  height: 600px;
+  background: rgba(212,175,55,0.15);
+  filter: blur(120px);
+  border-radius: 50%;
+  top: -200px;
+  left: -150px;
+  animation: floatGlow 8s ease-in-out infinite;
+}
+
+@keyframes floatGlow {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(40px); }
+}
+
+/* =========================
+   CONTAINER
+========================= */
+
+.container {
+  max-width: 1100px;
+  margin: auto;
+  padding: 60px 20px;
+}
+
+/* HEADER */
+.header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.header h1 {
+  font-family: "Playfair Display";
+  font-size: 42px;
+  letter-spacing: 1px;
+}
+
+.header p {
+  opacity: 0.7;
+  margin-top: 10px;
+}
+
+/* =========================
+   PROGRESS STEPPER
+========================= */
+
+.stepper {
+  display: flex;
+  justify-content: space-between;
+  margin: 40px 0;
+  position: relative;
+}
+
+.stepper::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: rgba(255,255,255,0.1);
+  z-index: 0;
+}
+
+.step {
+  z-index: 1;
+  text-align: center;
+  flex: 1;
+  position: relative;
+}
+
+.circle {
+  width: 40px;
+  height: 40px;
+  margin: auto;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(10px);
+  transition: 0.4s;
+}
+
+.step.active .circle {
+  background: #d4af37;
+  transform: scale(1.2);
+}
+
+.step.completed .circle {
+  background: #00c896;
+}
+
+.step span {
+  display: block;
+  margin-top: 10px;
+  font-size: 12px;
+  opacity: 0.7;
+}
+
+/* =========================
+   CARD SYSTEM
+========================= */
+
+.card {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  backdrop-filter: blur(20px);
+  border-radius: 18px;
+  padding: 30px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+  transition: 0.5s ease;
+  animation: fadeUp 0.8s ease;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* =========================
+   FORM
+========================= */
+
+.form-group {
+  margin-bottom: 18px;
+}
+
+input, select {
+  width: 100%;
+  padding: 14px;
+  border-radius: 12px;
+  border: none;
+  outline: none;
+  background: rgba(255,255,255,0.08);
+  color: white;
+  transition: 0.3s;
+}
+
+input:focus, select:focus {
+  background: rgba(255,255,255,0.12);
+  transform: scale(1.02);
+}
+
+/* BUTTON */
+.btn {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #d4af37, #b88a2c);
+  color: black;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+  margin-top: 10px;
+}
+
+.btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgba(212,175,55,0.4);
+}
+
+/* =========================
+   STEP SCREENS
+========================= */
+
+.screen {
+  display: none;
+}
+
+.screen.active {
+  display: block;
+}
+
+/* STATUS BOX */
+.status-box {
+  text-align: center;
+  padding: 40px;
+}
+
+.loader {
+  width: 60px;
+  height: 60px;
+  border: 4px solid rgba(255,255,255,0.1);
+  border-top: 4px solid #d4af37;
+  border-radius: 50%;
+  margin: 20px auto;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* PAYMENT CARDS */
+.pricing {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+  gap: 20px;
+}
+
+.price-card {
+  padding: 20px;
+  border-radius: 16px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  transition: 0.4s;
+  cursor: pointer;
+}
+
+.price-card:hover {
+  transform: translateY(-8px);
+  border-color: #d4af37;
+}
+
+/* SUCCESS */
+.success {
+  text-align: center;
+}
+
+.success h2 {
+  font-family: "Playfair Display";
+  font-size: 34px;
+  color: #d4af37;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media(max-width:768px){
+  .header h1 { font-size: 28px; }
+  .step span { font-size: 10px; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="bg-glow"></div>
+
+<div class="container">
+
+  <div class="header">
+    <h1>French Fluency Journal</h1>
+    <p>Premium Member Access Portal</p>
+  </div>
+
+  <!-- STEP PROGRESS -->
+  <div class="stepper">
+    <div class="step active" id="s1">
+      <div class="circle">1</div>
+      <span>Register</span>
+    </div>
+    <div class="step" id="s2">
+      <div class="circle">2</div>
+      <span>Review</span>
+    </div>
+    <div class="step" id="s3">
+      <div class="circle">3</div>
+      <span>Payment</span>
+    </div>
+    <div class="step" id="s4">
+      <div class="circle">4</div>
+      <span>Access</span>
+    </div>
+  </div>
+
+  <!-- STEP 1 -->
+  <div class="screen active" id="step1">
+    <div class="card">
+      <h2>Create Account</h2>
+
+      <div class="form-group">
+        <input type="text" placeholder="Full Name">
+      </div>
+
+      <div class="form-group">
+        <input type="email" placeholder="Email Address">
+      </div>
+
+      <div class="form-group">
+        <input type="text" placeholder="Phone Number">
+      </div>
+
+      <div class="form-group">
+        <select>
+          <option>Learning Level</option>
+          <option>A1 - Beginner</option>
+          <option>A2</option>
+          <option>B1 - Intermediate</option>
+          <option>B2</option>
+        </select>
+      </div>
+
+      <button class="btn" onclick="nextStep(2)">Continue Application</button>
+    </div>
+  </div>
+
+  <!-- STEP 2 -->
+  <div class="screen" id="step2">
+    <div class="card status-box">
+      <h2>Application Under Review</h2>
+      <div class="loader"></div>
+      <p>We are reviewing your application...</p>
+      <button class="btn" onclick="nextStep(3)">Simulate Approval</button>
+    </div>
+  </div>
+
+  <!-- STEP 3 -->
+  <div class="screen" id="step3">
+    <div class="card">
+      <h2>Select Payment Plan</h2>
+
+      <div class="pricing">
+        <div class="price-card">Monthly Plan</div>
+        <div class="price-card">Quarterly Plan</div>
+        <div class="price-card">Full Access</div>
+      </div>
+
+      <button class="btn" onclick="nextStep(4)">Proceed to Payment</button>
+    </div>
+  </div>
+
+  <!-- STEP 4 -->
+  <div class="screen" id="step4">
+    <div class="card success">
+      <h2>🎉 Welcome to French Fluency Journal</h2>
+      <p>You are now a fully registered member.</p>
+      <button class="btn">Enter Dashboard</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+
+let currentStep = 1;
+
+function nextStep(step){
+  document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+  document.getElementById("step"+step).classList.add("active");
+
+  document.querySelectorAll(".step").forEach(s => {
+    s.classList.remove("active");
+    s.classList.remove("completed");
+  });
+
+  for(let i=1;i<=4;i++){
+    if(i < step){
+      document.getElementById("s"+i).classList.add("completed");
+    }
+    if(i === step){
+      document.getElementById("s"+i).classList.add("active");
+    }
+  }
+
+  currentStep = step;
+}
+
+</script>
+
+</body>
+</html>

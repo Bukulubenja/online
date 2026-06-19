@@ -1,376 +1,390 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-<title>Articles | French Fluency Journal</title>
+<title>French Luxe Blog</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-
-<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 
 <style>
-
-/* ======================
-ROOT
-====================== */
 :root{
---navy:#0A2342;
---blue:#0055A4;
---gold:#D4AF37;
---bg:#FAFAFA;
---text:#1A1A1A;
+    --navy:#0A2342;
+    --gold:#D4AF37;
+    --blue:#0055A4;
+    --red:#EF4135;
+    --white:#FAFAFA;
+    --text:#1A1A1A;
 }
 
+/* RESET */
 *{
-margin:0;
-padding:0;
-box-sizing:border-box;
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
 }
 
 body{
-font-family:Inter;
-background:var(--bg);
-overflow-x:hidden;
-color:var(--text);
+    font-family:Inter, sans-serif;
+    background:var(--white);
+    color:var(--text);
+    overflow-x:hidden;
 }
 
-/* ======================
-PAGE TRANSITION OVERLAY
-====================== */
-.transition{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:var(--navy);
-z-index:9999;
-transform:scaleY(1);
-transform-origin:top;
+/* BACKGROUND LAYER */
+body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    background:
+        radial-gradient(circle at 10% 10%, rgba(212,175,55,0.15), transparent 40%),
+        radial-gradient(circle at 90% 20%, rgba(0,85,164,0.12), transparent 45%),
+        radial-gradient(circle at 50% 90%, rgba(239,65,53,0.08), transparent 50%);
+    z-index:-1;
 }
 
-/* ======================
-NAV
-====================== */
+/* NAV */
 nav{
-position:fixed;
-width:100%;
-top:0;
-z-index:1000;
-display:flex;
-justify-content:space-between;
-align-items:center;
-padding:18px 8%;
-background:rgba(255,255,255,0.7);
-backdrop-filter:blur(20px);
+    position:fixed;
+    top:0;
+    width:100%;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:20px 60px;
+    backdrop-filter:blur(20px);
+    background:rgba(255,255,255,0.6);
+    border-bottom:1px solid rgba(0,0,0,0.05);
+    z-index:1000;
 }
 
 .logo{
-font-weight:800;
-font-size:22px;
-font-family:"Playfair Display";
-color:var(--navy);
+    font-family:"Playfair Display";
+    font-size:22px;
+    letter-spacing:1px;
 }
 
 .logo span{ color:var(--gold); }
 
-/* ======================
-HERO HEADER
-====================== */
-.header{
-height:60vh;
-display:flex;
-align-items:center;
-justify-content:center;
-text-align:center;
-position:relative;
-background:
-linear-gradient(rgba(10,35,66,0.7),rgba(10,35,66,0.7)),
-url("https://images.unsplash.com/photo-1520975682031-a6cfd5c6c1b8") center/cover;
-color:white;
+.nav-links{
+    display:flex;
+    gap:25px;
 }
 
-.header h1{
-font-size:4rem;
-font-family:"Playfair Display";
+.nav-links a{
+    text-decoration:none;
+    color:var(--text);
+    font-size:13px;
+    position:relative;
+    transition:0.3s;
 }
 
-/* ======================
-FILTER BAR (APPLE STYLE)
-====================== */
-.filters{
-position:sticky;
-top:70px;
-background:white;
-padding:20px 8%;
-display:flex;
-gap:15px;
-overflow-x:auto;
-box-shadow:0 10px 30px rgba(0,0,0,0.05);
-z-index:900;
+.nav-links a::after{
+    content:"";
+    position:absolute;
+    left:0;
+    bottom:-4px;
+    width:0%;
+    height:1px;
+    background:var(--gold);
+    transition:0.3s;
 }
 
-.filter{
-padding:10px 18px;
-border-radius:40px;
-background:#f2f2f2;
-cursor:pointer;
-white-space:nowrap;
-transition:.3s;
+.nav-links a:hover::after{
+    width:100%;
 }
 
-.filter:hover,
-.filter.active{
-background:var(--blue);
-color:white;
+/* LANGUAGE TOGGLE */
+.lang-toggle{
+    display:flex;
+    gap:10px;
+    border:1px solid rgba(0,0,0,0.1);
+    padding:6px;
+    border-radius:30px;
 }
 
-/* ======================
-ARTICLES GRID
-====================== */
-.grid{
-padding:80px 8%;
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
-gap:40px;
+.lang-toggle button{
+    border:none;
+    background:transparent;
+    padding:6px 12px;
+    cursor:pointer;
+    font-size:12px;
+    transition:0.3s;
+}
+
+.lang-toggle .active{
+    background:var(--navy);
+    color:white;
+    border-radius:20px;
+}
+
+/* HERO */
+.hero{
+    height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:0 20px;
+    position:relative;
+}
+
+.hero h1{
+    font-family:"Playfair Display";
+    font-size:64px;
+    line-height:1.1;
+    max-width:900px;
+}
+
+.hero h1 span{
+    color:var(--gold);
+}
+
+.hero p{
+    margin-top:20px;
+    opacity:0.7;
+    font-size:15px;
+}
+
+/* FLOATING ELEMENTS */
+.float{
+    position:absolute;
+    width:200px;
+    height:200px;
+    background:radial-gradient(circle, rgba(212,175,55,0.2), transparent);
+    filter:blur(30px);
+}
+
+/* CATEGORIES */
+.categories{
+    display:flex;
+    justify-content:center;
+    gap:15px;
+    flex-wrap:wrap;
+    padding:80px 20px 40px;
+}
+
+.cat{
+    padding:10px 18px;
+    border-radius:30px;
+    border:1px solid rgba(0,0,0,0.1);
+    font-size:13px;
+    cursor:pointer;
+    transition:0.4s;
+    backdrop-filter:blur(10px);
+}
+
+.cat:hover{
+    transform:translateY(-3px);
+    background:var(--navy);
+    color:white;
+}
+
+/* POSTS GRID */
+.posts{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:25px;
+    padding:40px 60px 120px;
 }
 
 .card{
-background:white;
-border-radius:25px;
-overflow:hidden;
-box-shadow:0 20px 60px rgba(0,0,0,0.08);
-transition:.5s;
-cursor:pointer;
-transform:translateY(0);
+    background:white;
+    border-radius:20px;
+    overflow:hidden;
+    box-shadow:0 20px 60px rgba(0,0,0,0.08);
+    transform:translateY(40px);
+    opacity:0;
+    transition:0.5s;
 }
 
 .card:hover{
-transform:translateY(-12px) scale(1.01);
+    transform:translateY(-8px) scale(1.02);
 }
 
-.image{
-height:220px;
-background-size:cover;
-background-position:center;
+.card img{
+    width:100%;
+    height:180px;
+    object-fit:cover;
 }
 
-.content{
-padding:25px;
+.card-content{
+    padding:20px;
 }
 
 .tag{
-display:inline-block;
-padding:6px 14px;
-border-radius:20px;
-background:var(--blue);
-color:white;
-font-size:12px;
-margin-bottom:10px;
+    font-size:11px;
+    color:var(--gold);
+    letter-spacing:1px;
 }
 
-h3{
-font-family:"Playfair Display";
-margin-bottom:10px;
+.card h3{
+    margin-top:8px;
+    font-family:"Playfair Display";
 }
 
-.meta{
-font-size:13px;
-color:#777;
+.card p{
+    font-size:13px;
+    margin-top:10px;
+    opacity:0.7;
 }
 
-/* ======================
-LOAD MORE BUTTON
-====================== */
-.load{
-text-align:center;
-padding:60px;
+/* FOOTER */
+footer{
+    text-align:center;
+    padding:60px;
+    font-size:13px;
+    opacity:0.6;
 }
 
-.load button{
-padding:15px 40px;
-border:none;
-border-radius:40px;
-background:var(--navy);
-color:white;
-cursor:pointer;
-transition:.3s;
-}
-
-.load button:hover{
-background:var(--blue);
-transform:translateY(-3px);
-}
-
-/* ======================
-RESPONSIVE
-====================== */
+/* RESPONSIVE */
 @media(max-width:768px){
-
-.header h1{
-font-size:2.5rem;
+    nav{ padding:15px 20px; }
+    .hero h1{ font-size:38px; }
+    .posts{ padding:20px; }
 }
-
-.filters{
-padding:15px;
-}
-
-}
-
 </style>
 </head>
 
 <body>
 
-<!-- PAGE TRANSITION -->
-<div class="transition" id="transition"></div>
-
-<!-- NAV -->
 <nav>
-<div class="logo">French <span>Fluency</span></div>
+    <div class="logo">French<span>Luxe</span></div>
+
+    <div class="nav-links">
+        <a href="#">Home</a>
+        <a href="#">Grammar</a>
+        <a href="#">Vocabulary</a>
+        <a href="#">Culture</a>
+        <a href="#">DELF</a>
+    </div>
+
+    <div class="lang-toggle">
+        <button class="active" onclick="setLang('EN')">EN</button>
+        <button onclick="setLang('FR')">FR</button>
+    </div>
 </nav>
 
-<!-- HEADER -->
-<section class="header">
-<h1>Explore Articles</h1>
+<section class="hero">
+    <div>
+        <h1 id="heroTitle">
+            Master <span>French</span> with Elegance & Precision
+        </h1>
+        <p id="heroText">Grammar • Vocabulary • Culture • Pronunciation • DELF Preparation</p>
+    </div>
+
+    <div class="float" style="top:20%; left:10%"></div>
+    <div class="float" style="bottom:10%; right:15%"></div>
 </section>
 
-<!-- FILTERS -->
-<div class="filters">
-
-<div class="filter active">All</div>
-<div class="filter">Grammar</div>
-<div class="filter">Vocabulary</div>
-<div class="filter">Pronunciation</div>
-<div class="filter">Culture</div>
-<div class="filter">DELF</div>
-
+<div class="categories">
+    <div class="cat">Language</div>
+    <div class="cat">Grammar</div>
+    <div class="cat">Vocabulary</div>
+    <div class="cat">Culture</div>
+    <div class="cat">Pronunciation</div>
+    <div class="cat">DELF</div>
 </div>
 
-<!-- GRID -->
-<section class="grid">
+<section class="posts">
 
-<div class="card">
-<div class="image" style="background-image:url('https://images.unsplash.com/photo-1520975682031-a6cfd5c6c1b8')"></div>
-<div class="content">
-<div class="tag">Grammar</div>
-<h3>Master French Verb Conjugation</h3>
-<p class="meta">8 min read • 2026</p>
-</div>
-</div>
+    <div class="card">
+        <img src="https://images.unsplash.com/photo-1529070538774-1843cb3265df" />
+        <div class="card-content">
+            <div class="tag">GRAMMAR</div>
+            <h3>Master French Tenses</h3>
+            <p>Understand how present, past and future interact in real conversations.</p>
+        </div>
+    </div>
 
-<div class="card">
-<div class="image" style="background-image:url('https://images.unsplash.com/photo-1520975682031-a6cfd5c6c1b8')"></div>
-<div class="content">
-<div class="tag">Vocabulary</div>
-<h3>100 Essential French Words</h3>
-<p class="meta">12 min read • 2026</p>
-</div>
-</div>
+    <div class="card">
+        <img src="https://images.unsplash.com/photo-1528747045269-390fe33c19a0" />
+        <div class="card-content">
+            <div class="tag">VOCABULARY</div>
+            <h3>Daily French Words</h3>
+            <p>Build strong vocabulary with real-life expressions used in France.</p>
+        </div>
+    </div>
 
-<div class="card">
-<div class="image" style="background-image:url('https://images.unsplash.com/photo-1520975682031-a6cfd5c6c1b8')"></div>
-<div class="content">
-<div class="tag">Culture</div>
-<h3>French Culture Explained</h3>
-<p class="meta">10 min read • 2026</p>
-</div>
-</div>
+    <div class="card">
+        <img src="https://images.unsplash.com/photo-1526481280695-3c687fd5432c" />
+        <div class="card-content">
+            <div class="tag">CULTURE</div>
+            <h3>French Lifestyle</h3>
+            <p>Discover traditions, etiquette, and modern French society.</p>
+        </div>
+    </div>
+
+    <div class="card">
+        <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f" />
+        <div class="card-content">
+            <div class="tag">DELF</div>
+            <h3>Exam Preparation</h3>
+            <p>Practice strategies for A1–B1 DELF success with confidence.</p>
+        </div>
+    </div>
 
 </section>
 
-<!-- LOAD MORE -->
-<div class="load">
-<button>Load More Articles</button>
-</div>
+<footer>
+    © 2026 French Luxe Blog — Designed for immersive language mastery
+</footer>
 
 <script>
+gsap.registerPlugin(ScrollTrigger);
 
-/* =========================
-   PAGE TRANSITION (APPLE STYLE)
-========================= */
-window.addEventListener("load", () => {
-    gsap.to("#transition", {
-        scaleY: 0,
-        duration: 1.2,
-        ease: "power4.inOut",
-        transformOrigin: "bottom"
-    });
-});
-
-/* exit transition (optional for navigation) */
-document.querySelectorAll("a").forEach(link=>{
-    link.addEventListener("click", (e)=>{
-        if(link.getAttribute("href") !== "#"){
-            e.preventDefault();
-            gsap.to("#transition", {
-                scaleY: 1,
-                duration: 0.8,
-                ease: "power4.inOut",
-                onComplete: ()=> {
-                    window.location.href = link.href;
-                }
-            });
-        }
-    });
-});
-
-/* =========================
-   CARD ANIMATION
-========================= */
-gsap.from(".card", {
+// HERO ANIMATION
+gsap.from("#heroTitle",{
     opacity:0,
-    y:80,
-    stagger:0.15,
-    duration:1,
-    ease:"power3.out"
+    y:60,
+    duration:1.2
 });
 
-/* =========================
-   FILTER INTERACTION
-========================= */
-const filters = document.querySelectorAll(".filter");
+gsap.from("#heroText",{
+    opacity:0,
+    y:30,
+    delay:0.3
+});
 
-filters.forEach(f => {
-    f.addEventListener("click", () => {
-        filters.forEach(x => x.classList.remove("active"));
-        f.classList.add("active");
-
-        gsap.from(".card", {
-            opacity:0,
-            y:50,
-            duration:0.6,
-            stagger:0.1
-        });
+// CARD ANIMATION
+gsap.utils.toArray(".card").forEach(card=>{
+    gsap.to(card,{
+        scrollTrigger:{
+            trigger:card,
+            start:"top 85%"
+        },
+        opacity:1,
+        y:0,
+        duration:0.8,
+        ease:"power3.out"
     });
 });
 
-/* =========================
-   HOVER DEPTH EFFECT
-========================= */
-document.querySelectorAll(".card").forEach(card=>{
-    card.addEventListener("mousemove",(e)=>{
-        const rect = card.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
+// LANGUAGE TOGGLE
+function setLang(lang){
+    document.querySelectorAll(".lang-toggle button")
+    .forEach(b=>b.classList.remove("active"));
 
-        card.style.transform =
-        `perspective(1000px)
-        rotateX(${(y-rect.height/2)/20}deg)
-        rotateY(${(x-rect.width/2)/20}deg)
-        translateY(-10px)`;
-    });
+    event.target.classList.add("active");
 
-    card.addEventListener("mouseleave",()=>{
-        card.style.transform="translateY(0)";
-    });
-});
+    if(lang === "FR"){
+        document.getElementById("heroTitle").innerHTML =
+        "Maîtrisez le <span>Français</span> avec élégance et précision";
 
+        document.getElementById("heroText").innerText =
+        "Grammaire • Vocabulaire • Culture • Prononciation • Préparation DELF";
+    } else {
+        document.getElementById("heroTitle").innerHTML =
+        "Master <span>French</span> with Elegance & Precision";
+
+        document.getElementById("heroText").innerText =
+        "Grammar • Vocabulary • Culture • Pronunciation • DELF Preparation";
+    }
+}
 </script>
 
 </body>
