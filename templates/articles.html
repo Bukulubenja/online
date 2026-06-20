@@ -1,253 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+{% load static %}
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
 <title>French Luxe Blog</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'css/articles.css' %}">
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 
-<style>
-:root{
-    --navy:#0A2342;
-    --gold:#D4AF37;
-    --blue:#0055A4;
-    --red:#EF4135;
-    --white:#FAFAFA;
-    --text:#1A1A1A;
-}
-
-/* RESET */
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-}
-
-body{
-    font-family:Inter, sans-serif;
-    background:var(--white);
-    color:var(--text);
-    overflow-x:hidden;
-}
-
-/* BACKGROUND LAYER */
-body::before{
-    content:"";
-    position:fixed;
-    inset:0;
-    background:
-        radial-gradient(circle at 10% 10%, rgba(212,175,55,0.15), transparent 40%),
-        radial-gradient(circle at 90% 20%, rgba(0,85,164,0.12), transparent 45%),
-        radial-gradient(circle at 50% 90%, rgba(239,65,53,0.08), transparent 50%);
-    z-index:-1;
-}
-
-/* NAV */
-nav{
-    position:fixed;
-    top:0;
-    width:100%;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:20px 60px;
-    backdrop-filter:blur(20px);
-    background:rgba(255,255,255,0.6);
-    border-bottom:1px solid rgba(0,0,0,0.05);
-    z-index:1000;
-}
-
-.logo{
-    font-family:"Playfair Display";
-    font-size:22px;
-    letter-spacing:1px;
-}
-
-.logo span{ color:var(--gold); }
-
-.nav-links{
-    display:flex;
-    gap:25px;
-}
-
-.nav-links a{
-    text-decoration:none;
-    color:var(--text);
-    font-size:13px;
-    position:relative;
-    transition:0.3s;
-}
-
-.nav-links a::after{
-    content:"";
-    position:absolute;
-    left:0;
-    bottom:-4px;
-    width:0%;
-    height:1px;
-    background:var(--gold);
-    transition:0.3s;
-}
-
-.nav-links a:hover::after{
-    width:100%;
-}
-
-/* LANGUAGE TOGGLE */
-.lang-toggle{
-    display:flex;
-    gap:10px;
-    border:1px solid rgba(0,0,0,0.1);
-    padding:6px;
-    border-radius:30px;
-}
-
-.lang-toggle button{
-    border:none;
-    background:transparent;
-    padding:6px 12px;
-    cursor:pointer;
-    font-size:12px;
-    transition:0.3s;
-}
-
-.lang-toggle .active{
-    background:var(--navy);
-    color:white;
-    border-radius:20px;
-}
-
-/* HERO */
-.hero{
-    height:100vh;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    text-align:center;
-    padding:0 20px;
-    position:relative;
-}
-
-.hero h1{
-    font-family:"Playfair Display";
-    font-size:64px;
-    line-height:1.1;
-    max-width:900px;
-}
-
-.hero h1 span{
-    color:var(--gold);
-}
-
-.hero p{
-    margin-top:20px;
-    opacity:0.7;
-    font-size:15px;
-}
-
-/* FLOATING ELEMENTS */
-.float{
-    position:absolute;
-    width:200px;
-    height:200px;
-    background:radial-gradient(circle, rgba(212,175,55,0.2), transparent);
-    filter:blur(30px);
-}
-
-/* CATEGORIES */
-.categories{
-    display:flex;
-    justify-content:center;
-    gap:15px;
-    flex-wrap:wrap;
-    padding:80px 20px 40px;
-}
-
-.cat{
-    padding:10px 18px;
-    border-radius:30px;
-    border:1px solid rgba(0,0,0,0.1);
-    font-size:13px;
-    cursor:pointer;
-    transition:0.4s;
-    backdrop-filter:blur(10px);
-}
-
-.cat:hover{
-    transform:translateY(-3px);
-    background:var(--navy);
-    color:white;
-}
-
-/* POSTS GRID */
-.posts{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-    gap:25px;
-    padding:40px 60px 120px;
-}
-
-.card{
-    background:white;
-    border-radius:20px;
-    overflow:hidden;
-    box-shadow:0 20px 60px rgba(0,0,0,0.08);
-    transform:translateY(40px);
-    opacity:0;
-    transition:0.5s;
-}
-
-.card:hover{
-    transform:translateY(-8px) scale(1.02);
-}
-
-.card img{
-    width:100%;
-    height:180px;
-    object-fit:cover;
-}
-
-.card-content{
-    padding:20px;
-}
-
-.tag{
-    font-size:11px;
-    color:var(--gold);
-    letter-spacing:1px;
-}
-
-.card h3{
-    margin-top:8px;
-    font-family:"Playfair Display";
-}
-
-.card p{
-    font-size:13px;
-    margin-top:10px;
-    opacity:0.7;
-}
-
-/* FOOTER */
-footer{
-    text-align:center;
-    padding:60px;
-    font-size:13px;
-    opacity:0.6;
-}
-
-/* RESPONSIVE */
-@media(max-width:768px){
-    nav{ padding:15px 20px; }
-    .hero h1{ font-size:38px; }
-    .posts{ padding:20px; }
-}
-</style>
 </head>
 
 <body>
@@ -293,7 +58,7 @@ footer{
 <section class="posts">
 
     <div class="card">
-        <img src="https://images.unsplash.com/photo-1529070538774-1843cb3265df" />
+        <img src="{% static 'images/blog.jpg' %}" />
         <div class="card-content">
             <div class="tag">GRAMMAR</div>
             <h3>Master French Tenses</h3>
@@ -302,7 +67,7 @@ footer{
     </div>
 
     <div class="card">
-        <img src="https://images.unsplash.com/photo-1528747045269-390fe33c19a0" />
+        <img src="{% static 'images/blog.jpg' %}" />
         <div class="card-content">
             <div class="tag">VOCABULARY</div>
             <h3>Daily French Words</h3>
@@ -311,7 +76,7 @@ footer{
     </div>
 
     <div class="card">
-        <img src="https://images.unsplash.com/photo-1526481280695-3c687fd5432c" />
+        <img src="{% static 'images/blog.jpg' %}" />
         <div class="card-content">
             <div class="tag">CULTURE</div>
             <h3>French Lifestyle</h3>
@@ -320,7 +85,7 @@ footer{
     </div>
 
     <div class="card">
-        <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f" />
+        <img src="{% static 'images/blog.jpg' %}" />
         <div class="card-content">
             <div class="tag">DELF</div>
             <h3>Exam Preparation</h3>
@@ -333,59 +98,6 @@ footer{
 <footer>
     © 2026 French Luxe Blog — Designed for immersive language mastery
 </footer>
-
-<script>
-gsap.registerPlugin(ScrollTrigger);
-
-// HERO ANIMATION
-gsap.from("#heroTitle",{
-    opacity:0,
-    y:60,
-    duration:1.2
-});
-
-gsap.from("#heroText",{
-    opacity:0,
-    y:30,
-    delay:0.3
-});
-
-// CARD ANIMATION
-gsap.utils.toArray(".card").forEach(card=>{
-    gsap.to(card,{
-        scrollTrigger:{
-            trigger:card,
-            start:"top 85%"
-        },
-        opacity:1,
-        y:0,
-        duration:0.8,
-        ease:"power3.out"
-    });
-});
-
-// LANGUAGE TOGGLE
-function setLang(lang){
-    document.querySelectorAll(".lang-toggle button")
-    .forEach(b=>b.classList.remove("active"));
-
-    event.target.classList.add("active");
-
-    if(lang === "FR"){
-        document.getElementById("heroTitle").innerHTML =
-        "Maîtrisez le <span>Français</span> avec élégance et précision";
-
-        document.getElementById("heroText").innerText =
-        "Grammaire • Vocabulaire • Culture • Prononciation • Préparation DELF";
-    } else {
-        document.getElementById("heroTitle").innerHTML =
-        "Master <span>French</span> with Elegance & Precision";
-
-        document.getElementById("heroText").innerText =
-        "Grammar • Vocabulary • Culture • Pronunciation • DELF Preparation";
-    }
-}
-</script>
-
+<script src="{% static 'js/articles.js' %}"></script>
 </body>
 </html>
