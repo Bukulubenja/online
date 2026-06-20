@@ -340,8 +340,12 @@ ARTICLES
 }
 
 .article-image{
+
+    width:100%;
+    background-position:center;
+    background-size:cover;
+    border-radius:20px;
     height:260px;
-    background:url('https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=1200') center/cover;
 }
 
 .article-content{

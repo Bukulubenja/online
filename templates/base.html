@@ -137,19 +137,20 @@ Explore Articles
 </div>
 
 <div class="article-grid">
-
+{% for article in articles %}
 <div class="article-card">
 
-<div class="article-image"></div>
-
+<div class="article-image"
+     style="background-image:url('{% if article.image %}{{ article.image.url }}{% else %}https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=1200{% endif %}');">
+</div>
 <div class="article-content">
 
-<div class="tag">Grammar</div>
+<div class="tag">{{ article.category }}</div>
 
-<h3>Master French Verbs Faster</h3>
+<h3>{{ article.title }}</h3>
 
 <p>
-Learn the most efficient techniques for mastering French verb conjugation.
+{{ article.content|truncatewords:30 }}
 </p>
 
 <br>
@@ -161,28 +162,8 @@ Learn the most efficient techniques for mastering French verb conjugation.
 </div>
 
 </div>
+{% endfor %}
 
-<div class="article-card">
-
-<div class="article-image"></div>
-
-<div class="article-content">
-
-<div class="tag">Vocabulary</div>
-
-<h3>100 Essential French Words</h3>
-
-<p>
-The most useful French vocabulary every learner should know.
-</p>
-
-<br>
-
-<div class="meta">
-12 min read • June 2026
-</div>
-
-</div>
 
 </div>
 

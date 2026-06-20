@@ -4,8 +4,17 @@ from django.db import models
 
 
 class Article(models.Model):
+    CATEGORY_CHOICES = [
+        ('vocabulary', 'Vocabulary'),
+        ('grammar', 'Grammar'),
+        ('culture', 'Culture'),
+        ('travel', 'Travel'),
+        ('food', 'Food'),
+    ]
+
     title = models.CharField(max_length=200)
     content = models.TextField()
+    category = models.CharField(max_length=100, choices=CATEGORY_CHOICES)
     image = models.ImageField(upload_to='articles/')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
