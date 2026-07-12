@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'web',
     'user',
     'courses',
+    'enrollments',
 ]
 
 AUTH_USER_MODEL = 'user.User'

@@ -90,6 +90,62 @@ h1{
   opacity:0.6;
   font-size:14px;
 }
+
+.enroll-box{
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:14px;
+  padding:20px 25px;
+  margin-bottom:30px;
+}
+
+.btn{
+  display:inline-block;
+  padding:10px 22px;
+  border:none;
+  border-radius:10px;
+  background:linear-gradient(135deg,#d4af37,#b88a2c);
+  color:#000;
+  font-weight:600;
+  cursor:pointer;
+}
+
+.btn[disabled]{
+  background:rgba(255,255,255,0.1);
+  color:rgba(255,255,255,0.5);
+  cursor:not-allowed;
+}
+
+.progress-track{
+  height:8px;
+  background:rgba(255,255,255,0.08);
+  border-radius:50px;
+  overflow:hidden;
+  margin-top:10px;
+}
+
+.progress-fill{
+  height:100%;
+  background:linear-gradient(90deg,#d4af37,#b88a2c);
+}
+
+.lesson a{
+  color:#fff;
+  text-decoration:none;
+}
+
+.lesson a:hover{
+  color:#d4af37;
+}
+
+.lesson .locked{
+  opacity:0.5;
+}
+
+.messages p{
+  color:#ff8080;
+  margin-bottom:15px;
+}
 </style>
 </head>
 
@@ -111,12 +167,42 @@ h1{
   <h1>{{ course.title }}</h1>
   <p class="description">{{ course.description }}</p>
 
+  {% if messages %}
+  <div class="messages">
+    {% for message in messages %}
+    <p>{{ message }}</p>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <div class="enroll-box">
+    {% if enrollment %}
+      <strong>You're enrolled</strong> &mdash; {{ enrollment.progress_percent }}% complete
+      <div class="progress-track">
+        <div class="progress-fill" style="width:{{ enrollment.progress_percent }}%"></div>
+      </div>
+    {% elif course.price > 0 %}
+      <button class="btn" disabled>Payment coming soon &mdash; ${{ course.price }}</button>
+    {% else %}
+      <form method="post" action="{% url 'enroll' course.slug %}">
+        {% csrf_token %}
+        <button class="btn" type="submit">Enroll for free</button>
+      </form>
+    {% endif %}
+  </div>
+
   {% for module in course.modules.all %}
   <div class="module">
     <h3>Module {{ module.order }}: {{ module.title }}</h3>
     {% for lesson in module.lessons.all %}
     <div class="lesson">
-      <span>{{ lesson.title }}</span>
+      {% if enrollment %}
+      <a href="{% url 'lesson_detail' lesson.id %}">
+        {% if lesson.id in completed_lesson_ids %}✓ {% endif %}{{ lesson.title }}
+      </a>
+      {% else %}
+      <span class="locked">🔒 {{ lesson.title }}</span>
+      {% endif %}
       <span>
         {% if lesson.video_url %}Video{% endif %}
         {% if lesson.pdf %}PDF{% endif %}

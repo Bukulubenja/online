@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+{% load static %}
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Courses - French Fluency Journal</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Inter, sans-serif;}
+body{background:#050b18;color:#fff;}
+
+nav{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:20px 60px;
+  background:rgba(255,255,255,0.03);
+  border-bottom:1px solid rgba(255,255,255,0.08);
+}
+
+.logo{font-family:"Playfair Display";font-size:20px;}
+.logo span{color:#d4af37;}
+
+.nav-links a{
+  color:rgba(255,255,255,0.8);
+  text-decoration:none;
+  margin-left:25px;
+  font-size:14px;
+}
+
+.nav-links a:hover{color:#d4af37;}
+
+.container{
+  max-width:900px;
+  margin:0 auto;
+  padding:50px 20px 80px;
+}
+
+h1{
+  font-family:"Playfair Display";
+  font-size:32px;
+  margin-bottom:30px;
+}
+
+.course-row{
+  display:block;
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:14px;
+  padding:20px 25px;
+  margin-bottom:18px;
+  text-decoration:none;
+  color:#fff;
+  transition:0.3s;
+}
+
+.course-row:hover{
+  border-color:#d4af37;
+}
+
+.level-tag{
+  display:inline-block;
+  background:#d4af37;
+  color:#000;
+  font-weight:600;
+  font-size:12px;
+  padding:4px 10px;
+  border-radius:20px;
+  margin-bottom:10px;
+}
+
+.course-row h3{
+  font-family:"Playfair Display";
+  margin-bottom:10px;
+}
+
+.progress-track{
+  height:8px;
+  background:rgba(255,255,255,0.08);
+  border-radius:50px;
+  overflow:hidden;
+  margin-top:8px;
+}
+
+.progress-fill{
+  height:100%;
+  background:linear-gradient(90deg,#d4af37,#b88a2c);
+}
+
+.empty{
+  opacity:0.6;
+}
+</style>
+</head>
+
+<body>
+
+<nav>
+  <div class="logo">French <span>Fluency</span></div>
+  <div class="nav-links">
+    <a href="/">Home</a>
+    <a href="{% url 'courses' %}">Courses</a>
+    <a href="{% url 'my_courses' %}">My Courses</a>
+    <a href="{% url 'dashboard' %}">Dashboard</a>
+  </div>
+</nav>
+
+<div class="container">
+
+  <h1>My Courses</h1>
+
+  {% for enrollment in enrollments %}
+  <a class="course-row" href="{% url 'course_detail' enrollment.course.slug %}">
+    <div class="level-tag">{{ enrollment.course.level }}</div>
+    <h3>{{ enrollment.course.title }}</h3>
+    <div>{{ enrollment.progress_percent }}% complete</div>
+    <div class="progress-track">
+      <div class="progress-fill" style="width:{{ enrollment.progress_percent }}%"></div>
+    </div>
+  </a>
+  {% empty %}
+  <p class="empty">You haven't enrolled in any courses yet. <a href="{% url 'courses' %}" style="color:#d4af37;">Browse courses</a>.</p>
+  {% endfor %}
+
+</div>
+
+</body>
+</html>
