@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+{% load static %}
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Checkout - {{ course.title }}</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Inter, sans-serif;}
+body{background:#050b18;color:#fff;}
+
+nav{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:20px 60px;
+  background:rgba(255,255,255,0.03);
+  border-bottom:1px solid rgba(255,255,255,0.08);
+}
+
+.logo{font-family:"Playfair Display";font-size:20px;}
+.logo span{color:#d4af37;}
+
+.nav-links a{
+  color:rgba(255,255,255,0.8);
+  text-decoration:none;
+  margin-left:25px;
+  font-size:14px;
+}
+
+.nav-links a:hover{color:#d4af37;}
+
+.container{
+  max-width:600px;
+  margin:0 auto;
+  padding:50px 20px 80px;
+}
+
+h1{
+  font-family:"Playfair Display";
+  font-size:30px;
+  margin-bottom:10px;
+}
+
+.summary{
+  opacity:0.7;
+  margin-bottom:30px;
+}
+
+.card{
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:14px;
+  padding:25px;
+}
+
+.method{
+  display:block;
+  padding:14px 16px;
+  border-radius:10px;
+  border:1px solid rgba(255,255,255,0.1);
+  margin-bottom:12px;
+  cursor:pointer;
+  transition:0.3s;
+}
+
+.method:hover{
+  border-color:#d4af37;
+}
+
+.method input{
+  margin-right:10px;
+}
+
+.btn{
+  width:100%;
+  padding:14px;
+  border:none;
+  border-radius:12px;
+  background:linear-gradient(135deg,#d4af37,#b88a2c);
+  color:#000;
+  font-weight:600;
+  cursor:pointer;
+  margin-top:15px;
+}
+
+.messages p{
+  color:#ff8080;
+  margin-bottom:15px;
+}
+</style>
+</head>
+
+<body>
+
+<nav>
+  <div class="logo">French <span>Fluency</span></div>
+  <div class="nav-links">
+    <a href="/">Home</a>
+    <a href="{% url 'courses' %}">Courses</a>
+    <a href="{% url 'my_courses' %}">My Courses</a>
+  </div>
+</nav>
+
+<div class="container">
+
+  <h1>Checkout</h1>
+  <p class="summary">{{ course.title }} &mdash; ${{ course.price }}</p>
+
+  {% if messages %}
+  <div class="messages">
+    {% for message in messages %}
+    <p>{{ message }}</p>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <div class="card">
+    <form method="post">
+      {% csrf_token %}
+      {% for value, label in methods %}
+      <label class="method">
+        <input type="radio" name="method" value="{{ value }}" required>{{ label }}
+      </label>
+      {% endfor %}
+
+      <button class="btn" type="submit">Pay ${{ course.price }}</button>
+    </form>
+  </div>
+
+</div>
+
+</body>
+</html>

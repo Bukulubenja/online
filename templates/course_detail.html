@@ -182,7 +182,7 @@ h1{
         <div class="progress-fill" style="width:{{ enrollment.progress_percent }}%"></div>
       </div>
     {% elif course.price > 0 %}
-      <button class="btn" disabled>Payment coming soon &mdash; ${{ course.price }}</button>
+      <a class="btn" href="{% url 'checkout' course.slug %}">Enroll & Pay ${{ course.price }}</a>
     {% else %}
       <form method="post" action="{% url 'enroll' course.slug %}">
         {% csrf_token %}

@@ -16,6 +16,7 @@ urlpatterns = [
     path('user/', include('user.urls')),
     path('courses/', include('courses.urls')),
     path('portal/', include('enrollments.urls')),
+    path('payments/', include('payments.urls')),
     path('api/', include(router.urls)),
 
 ]
