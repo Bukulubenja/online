@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+{% load static %}
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Dashboard - French Fluency Journal</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Inter, sans-serif;}
+body{background:#050b18;color:#fff;}
+
+nav{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:20px 60px;
+  background:rgba(255,255,255,0.03);
+  border-bottom:1px solid rgba(255,255,255,0.08);
+}
+
+.logo{font-family:"Playfair Display";font-size:20px;}
+.logo span{color:#d4af37;}
+
+.nav-links a{
+  color:rgba(255,255,255,0.8);
+  text-decoration:none;
+  margin-left:25px;
+  font-size:14px;
+}
+
+.nav-links a:hover{color:#d4af37;}
+
+.container{
+  max-width:1100px;
+  margin:0 auto;
+  padding:50px 20px 80px;
+}
+
+h1{
+  font-family:"Playfair Display";
+  font-size:32px;
+  margin-bottom:10px;
+}
+
+.subtitle{
+  opacity:0.7;
+  margin-bottom:35px;
+}
+
+.stats{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:15px;
+  margin-bottom:35px;
+}
+
+.stat{
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:14px;
+  padding:20px;
+  transition:0.3s;
+}
+
+.stat:hover{
+  transform:translateY(-4px);
+  border-color:#d4af37;
+}
+
+.stat .value{
+  font-family:"Playfair Display";
+  font-size:28px;
+  color:#d4af37;
+}
+
+.stat .label{
+  opacity:0.7;
+  font-size:13px;
+  margin-top:4px;
+}
+
+.stat .sub{
+  opacity:0.5;
+  font-size:12px;
+  margin-top:6px;
+}
+
+section{
+  margin-bottom:35px;
+}
+
+h2{
+  font-family:"Playfair Display";
+  font-size:20px;
+  margin-bottom:15px;
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:14px;
+  overflow:hidden;
+}
+
+th, td{
+  text-align:left;
+  padding:12px 16px;
+  font-size:14px;
+  border-top:1px solid rgba(255,255,255,0.06);
+}
+
+th{
+  opacity:0.6;
+  font-weight:500;
+  border-top:none;
+}
+
+.empty{
+  opacity:0.6;
+  font-size:14px;
+  padding:15px 0;
+}
+</style>
+</head>
+
+<body>
+
+<nav>
+  <div class="logo">French <span>Fluency</span></div>
+  <div class="nav-links">
+    <a href="{% url 'dashboard' %}">Dashboard</a>
+    <a href="/admin/">Django Admin</a>
+  </div>
+</nav>
+
+<div class="container">
+
+  <h1>Admin Dashboard</h1>
+  <p class="subtitle">Platform overview for {{ request.user.first_name|default:request.user.username }}</p>
+
+  <div class="stats">
+    <div class="stat">
+      <div class="value">{{ total_students }}</div>
+      <div class="label">Total Students</div>
+      <div class="sub">{{ new_students }} new in the last 30 days</div>
+    </div>
+    <div class="stat">
+      <div class="value">{{ published_courses }}</div>
+      <div class="label">Active Courses</div>
+      <div class="sub">{{ total_courses }} total</div>
+    </div>
+    <div class="stat">
+      <div class="value">${{ monthly_revenue }}</div>
+      <div class="label">Monthly Revenue</div>
+      <div class="sub">${{ total_revenue }} all-time</div>
+    </div>
+    <div class="stat">
+      <div class="value">{{ certificates_issued }}</div>
+      <div class="label">Certificates Issued</div>
+      <div class="sub">{{ pass_rate }}% pass rate ({{ submitted_count }} exams taken)</div>
+    </div>
+    <div class="stat">
+      <div class="value">{{ total_enrollments }}</div>
+      <div class="label">Total Enrollments</div>
+      <div class="sub">{{ completion_rate }}% completed</div>
+    </div>
+    <div class="stat">
+      <div class="value">{{ payment_counts.success }}</div>
+      <div class="label">Successful Payments</div>
+      <div class="sub">{{ payment_counts.pending }} pending &middot; {{ payment_counts.failed }} failed</div>
+    </div>
+  </div>
+
+  <section>
+    <h2>Recent Payments</h2>
+    <table>
+      <tr><th>Student</th><th>Course</th><th>Amount</th><th>Method</th><th>Date</th></tr>
+      {% for payment in recent_payments %}
+      <tr>
+        <td>{{ payment.student.username }}</td>
+        <td>{{ payment.course.title }}</td>
+        <td>${{ payment.amount }}</td>
+        <td>{{ payment.get_method_display }}</td>
+        <td>{{ payment.created_at|date:"Y-m-d" }}</td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="5" class="empty">No successful payments yet.</td></tr>
+      {% endfor %}
+    </table>
+  </section>
+
+  <section>
+    <h2>Instructor Activity</h2>
+    <table>
+      <tr><th>Teacher</th><th>Courses</th><th>Students Enrolled</th></tr>
+      {% for row in instructors %}
+      <tr>
+        <td>{{ row.teacher.get_full_name|default:row.teacher.username }}</td>
+        <td>{{ row.course_count }}</td>
+        <td>{{ row.student_count }}</td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="3" class="empty">No teachers yet.</td></tr>
+      {% endfor %}
+    </table>
+  </section>
+
+</div>
+
+</body>
+</html>

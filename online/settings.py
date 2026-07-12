@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'enrollments',
     'payments',
     'certifications',
+    'dashboard',
 ]
 
 AUTH_USER_MODEL = 'user.User'

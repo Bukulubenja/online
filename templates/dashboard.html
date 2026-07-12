@@ -280,6 +280,9 @@ body{
     <a href="{% url 'my_courses' %}" style="text-decoration:none; color:inherit;"><div class="nav-item">🎓 My Courses</div></a>
     <a href="{% url 'my_exams' %}" style="text-decoration:none; color:inherit;"><div class="nav-item">📝 Certifications</div></a>
     <a href="{% url 'my_certificates' %}" style="text-decoration:none; color:inherit;"><div class="nav-item">📜 My Certificates</div></a>
+    {% if user.role == 'main_admin' or user.is_superuser %}
+    <a href="{% url 'admin_dashboard' %}" style="text-decoration:none; color:inherit;"><div class="nav-item">🛠 Admin Dashboard</div></a>
+    {% endif %}
     <div class="nav-item">📊 Progress</div>
     <div class="nav-item">🧠 Vocabulary</div>
     <div class="nav-item">🎧 Listening</div>
