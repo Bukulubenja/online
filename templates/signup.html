@@ -277,119 +277,55 @@ input:focus, select:focus {
     <p>Premium Member Access Portal</p>
   </div>
 
-  <!-- STEP PROGRESS -->
-  <div class="stepper">
-    <div class="step active" id="s1">
-      <div class="circle">1</div>
-      <span>Register</span>
-    </div>
-    <div class="step" id="s2">
-      <div class="circle">2</div>
-      <span>Review</span>
-    </div>
-    <div class="step" id="s3">
-      <div class="circle">3</div>
-      <span>Payment</span>
-    </div>
-    <div class="step" id="s4">
-      <div class="circle">4</div>
-      <span>Access</span>
-    </div>
+  {% if messages %}
+  <div style="margin-bottom:20px;">
+    {% for message in messages %}
+    <p style="color:#ff8080; text-align:center;">{{ message }}</p>
+    {% endfor %}
   </div>
+  {% endif %}
 
-  <!-- STEP 1 -->
   <div class="screen active" id="step1">
     <div class="card">
       <h2>Create Account</h2>
 
-      <div class="form-group">
-        <input type="text" placeholder="Full Name">
-      </div>
+      <form method="post">
+        {% csrf_token %}
 
-      <div class="form-group">
-        <input type="email" placeholder="Email Address">
-      </div>
+        <div class="form-group">
+          <input type="text" name="full_name" placeholder="Full Name">
+        </div>
 
-      <div class="form-group">
-        <input type="text" placeholder="Phone Number">
-      </div>
+        <div class="form-group">
+          <input type="email" name="email" placeholder="Email Address" required>
+        </div>
 
-      <div class="form-group">
-        <select>
-          <option>Learning Level</option>
-          <option>A1 - Beginner</option>
-          <option>A2</option>
-          <option>B1 - Intermediate</option>
-          <option>B2</option>
-        </select>
-      </div>
+        <div class="form-group">
+          <input type="text" name="phone" placeholder="Phone Number">
+        </div>
 
-      <button class="btn" onclick="nextStep(2)">Continue Application</button>
-    </div>
-  </div>
+        <div class="form-group">
+          <select name="current_level">
+            <option value="">Learning Level</option>
+            <option value="A1">A1 - Beginner</option>
+            <option value="A2">A2 - Elementary</option>
+            <option value="B1">B1 - Intermediate</option>
+            <option value="B2">B2 - Upper Intermediate</option>
+            <option value="C1">C1 - Advanced</option>
+            <option value="C2">C2 - Mastery</option>
+          </select>
+        </div>
 
-  <!-- STEP 2 -->
-  <div class="screen" id="step2">
-    <div class="card status-box">
-      <h2>Application Under Review</h2>
-      <div class="loader"></div>
-      <p>We are reviewing your application...</p>
-      <button class="btn" onclick="nextStep(3)">Simulate Approval</button>
-    </div>
-  </div>
+        <div class="form-group">
+          <input type="password" name="password" placeholder="Password" required>
+        </div>
 
-  <!-- STEP 3 -->
-  <div class="screen" id="step3">
-    <div class="card">
-      <h2>Select Payment Plan</h2>
-
-      <div class="pricing">
-        <div class="price-card">Monthly Plan</div>
-        <div class="price-card">Quarterly Plan</div>
-        <div class="price-card">Full Access</div>
-      </div>
-
-      <button class="btn" onclick="nextStep(4)">Proceed to Payment</button>
-    </div>
-  </div>
-
-  <!-- STEP 4 -->
-  <div class="screen" id="step4">
-    <div class="card success">
-      <h2>🎉 Welcome to French Fluency Journal</h2>
-      <p>You are now a fully registered member.</p>
-      <button class="btn">Enter Dashboard</button>
+        <button class="btn" type="submit">Create Account</button>
+      </form>
     </div>
   </div>
 
 </div>
-
-<script>
-
-let currentStep = 1;
-
-function nextStep(step){
-  document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
-  document.getElementById("step"+step).classList.add("active");
-
-  document.querySelectorAll(".step").forEach(s => {
-    s.classList.remove("active");
-    s.classList.remove("completed");
-  });
-
-  for(let i=1;i<=4;i++){
-    if(i < step){
-      document.getElementById("s"+i).classList.add("completed");
-    }
-    if(i === step){
-      document.getElementById("s"+i).classList.add("active");
-    }
-  }
-
-  currentStep = step;
-}
-
-</script>
 
 </body>
 </html>

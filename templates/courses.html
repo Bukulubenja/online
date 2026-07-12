@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+{% load static %}
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>French Fluency Journal - Courses</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Inter, sans-serif;}
+body{background:#050b18;color:#fff;}
+
+nav{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:20px 60px;
+  background:rgba(255,255,255,0.03);
+  border-bottom:1px solid rgba(255,255,255,0.08);
+}
+
+.logo{font-family:"Playfair Display";font-size:20px;}
+.logo span{color:#d4af37;}
+
+.nav-links a{
+  color:rgba(255,255,255,0.8);
+  text-decoration:none;
+  margin-left:25px;
+  font-size:14px;
+}
+
+.nav-links a:hover{color:#d4af37;}
+
+.header{
+  text-align:center;
+  padding:60px 20px 30px;
+}
+
+.header h1{
+  font-family:"Playfair Display";
+  font-size:38px;
+}
+
+.header p{
+  opacity:0.7;
+  margin-top:10px;
+}
+
+.course-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(280px,1fr));
+  gap:25px;
+  max-width:1100px;
+  margin:0 auto;
+  padding:20px 20px 80px;
+}
+
+.course-card{
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:16px;
+  overflow:hidden;
+  text-decoration:none;
+  color:#fff;
+  transition:0.3s;
+}
+
+.course-card:hover{
+  transform:translateY(-6px);
+  border-color:#d4af37;
+}
+
+.course-thumb{
+  height:160px;
+  background-size:cover;
+  background-position:center;
+  background-color:#0a2342;
+}
+
+.course-body{
+  padding:20px;
+}
+
+.level-tag{
+  display:inline-block;
+  background:#d4af37;
+  color:#000;
+  font-weight:600;
+  font-size:12px;
+  padding:4px 10px;
+  border-radius:20px;
+  margin-bottom:10px;
+}
+
+.course-body h3{
+  font-family:"Playfair Display";
+  margin-bottom:8px;
+}
+
+.course-body p{
+  opacity:0.7;
+  font-size:14px;
+}
+
+.empty{
+  text-align:center;
+  padding:60px 20px;
+  opacity:0.6;
+}
+</style>
+</head>
+
+<body>
+
+<nav>
+  <div class="logo">French <span>Fluency</span></div>
+  <div class="nav-links">
+    <a href="/">Home</a>
+    <a href="/articles">Articles</a>
+    <a href="{% url 'courses' %}">Courses</a>
+    <a href="/user/login/">Login</a>
+  </div>
+</nav>
+
+<div class="header">
+  <h1>French Courses</h1>
+  <p>From A1 Beginner to C2 Mastery — pick your level and start learning.</p>
+</div>
+
+<div class="course-grid">
+{% for course in courses %}
+<a class="course-card" href="{% url 'course_detail' course.slug %}">
+  <div class="course-thumb" style="background-image:url('{% if course.thumbnail %}{{ course.thumbnail.url }}{% endif %}');"></div>
+  <div class="course-body">
+    <div class="level-tag">{{ course.level }}</div>
+    <h3>{{ course.title }}</h3>
+    <p>{{ course.description|truncatewords:20 }}</p>
+  </div>
+</a>
+{% empty %}
+<div class="empty">No courses published yet. Check back soon.</div>
+{% endfor %}
+</div>
+
+</body>
+</html>

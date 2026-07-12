@@ -276,12 +276,13 @@ body{
     <div class="logo">French Fluency</div>
 
     <div class="nav-item">🏠 Dashboard</div>
-    <div class="nav-item">📘 Lessons</div>
+    <a href="{% url 'courses' %}" style="text-decoration:none; color:inherit;"><div class="nav-item">📘 Courses</div></a>
     <div class="nav-item">📊 Progress</div>
     <div class="nav-item">🧠 Vocabulary</div>
     <div class="nav-item">🎧 Listening</div>
     <div class="nav-item">💬 Community</div>
     <div class="nav-item">⚙ Settings</div>
+    <a href="{% url 'logout' %}" style="text-decoration:none; color:inherit;"><div class="nav-item">🚪 Logout</div></a>
   </div>
 
   <!-- MAIN -->
@@ -289,7 +290,7 @@ body{
 
     <!-- TOPBAR -->
     <div class="topbar">
-      <h2>Welcome back, Student</h2>
+      <h2>Welcome back, {{ user.first_name|default:user.username }}</h2>
       <div class="profile">
         <div class="avatar"></div>
         <div>Level: B1</div>

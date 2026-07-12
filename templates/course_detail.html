@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+{% load static %}
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ course.title }} - French Fluency Journal</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Inter, sans-serif;}
+body{background:#050b18;color:#fff;}
+
+nav{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:20px 60px;
+  background:rgba(255,255,255,0.03);
+  border-bottom:1px solid rgba(255,255,255,0.08);
+}
+
+.logo{font-family:"Playfair Display";font-size:20px;}
+.logo span{color:#d4af37;}
+
+.nav-links a{
+  color:rgba(255,255,255,0.8);
+  text-decoration:none;
+  margin-left:25px;
+  font-size:14px;
+}
+
+.nav-links a:hover{color:#d4af37;}
+
+.container{
+  max-width:900px;
+  margin:0 auto;
+  padding:50px 20px 80px;
+}
+
+.level-tag{
+  display:inline-block;
+  background:#d4af37;
+  color:#000;
+  font-weight:600;
+  font-size:12px;
+  padding:4px 10px;
+  border-radius:20px;
+  margin-bottom:15px;
+}
+
+h1{
+  font-family:"Playfair Display";
+  font-size:32px;
+  margin-bottom:15px;
+}
+
+.description{
+  opacity:0.8;
+  margin-bottom:35px;
+  line-height:1.6;
+}
+
+.module{
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:14px;
+  padding:20px 25px;
+  margin-bottom:18px;
+}
+
+.module h3{
+  font-family:"Playfair Display";
+  margin-bottom:12px;
+}
+
+.lesson{
+  display:flex;
+  justify-content:space-between;
+  padding:10px 0;
+  border-top:1px solid rgba(255,255,255,0.06);
+  font-size:14px;
+  opacity:0.9;
+}
+
+.lesson:first-of-type{
+  border-top:none;
+}
+
+.empty{
+  opacity:0.6;
+  font-size:14px;
+}
+</style>
+</head>
+
+<body>
+
+<nav>
+  <div class="logo">French <span>Fluency</span></div>
+  <div class="nav-links">
+    <a href="/">Home</a>
+    <a href="/articles">Articles</a>
+    <a href="{% url 'courses' %}">Courses</a>
+    <a href="/user/login/">Login</a>
+  </div>
+</nav>
+
+<div class="container">
+
+  <div class="level-tag">{{ course.level }}</div>
+  <h1>{{ course.title }}</h1>
+  <p class="description">{{ course.description }}</p>
+
+  {% for module in course.modules.all %}
+  <div class="module">
+    <h3>Module {{ module.order }}: {{ module.title }}</h3>
+    {% for lesson in module.lessons.all %}
+    <div class="lesson">
+      <span>{{ lesson.title }}</span>
+      <span>
+        {% if lesson.video_url %}Video{% endif %}
+        {% if lesson.pdf %}PDF{% endif %}
+      </span>
+    </div>
+    {% empty %}
+    <p class="empty">No lessons yet.</p>
+    {% endfor %}
+  </div>
+  {% empty %}
+  <p class="empty">This course doesn't have any modules yet.</p>
+  {% endfor %}
+
+</div>
+
+</body>
+</html>

@@ -232,21 +232,33 @@ button:active::after{
   <h1>Welcome Back</h1>
   <p>Continue your journey to French fluency</p>
 
-  <div class="input-group">
-    <input type="email" placeholder=" " required>
-    <label>Email Address</label>
+  {% if messages %}
+  <div style="margin-bottom:15px;">
+    {% for message in messages %}
+    <p style="color:#ff8080; font-size:13px;">{{ message }}</p>
+    {% endfor %}
   </div>
+  {% endif %}
 
-  <div class="input-group">
-    <input type="password" placeholder=" " required>
-    <label>Password</label>
-  </div>
+  <form method="post">
+    {% csrf_token %}
 
-  <button>Sign In</button>
+    <div class="input-group">
+      <input type="text" name="username" placeholder=" " required>
+      <label>Username</label>
+    </div>
+
+    <div class="input-group">
+      <input type="password" name="password" placeholder=" " required>
+      <label>Password</label>
+    </div>
+
+    <button type="submit">Sign In</button>
+  </form>
 
   <div class="footer">
     <a href="#">Forgot password?</a>
-    <a href="#">Create account</a>
+    <a href="{% url 'register' %}">Create account</a>
   </div>
 
 </div>
