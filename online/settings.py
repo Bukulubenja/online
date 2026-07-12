@@ -45,9 +45,15 @@ INSTALLED_APPS = [
     'payments',
     'certifications',
     'dashboard',
+    'assignments',
 ]
 
 AUTH_USER_MODEL = 'user.User'
+
+AUTHENTICATION_BACKENDS = [
+    'user.backends.EmailOrUsernameBackend',
+    'django.contrib.auth.backends.ModelBackend',
+]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

@@ -152,9 +152,7 @@ HERO
     min-height:100vh;
     display:flex;
     align-items:center;
-    justify-content:center;
-    text-align:center;
-    padding:120px 10%;
+    padding:160px 8% 100px;
     position:relative;
     overflow:hidden;
 }
@@ -171,8 +169,34 @@ HERO
     right:-200px;
 }
 
+.hero-grid{
+    max-width:1300px;
+    margin:0 auto;
+    width:100%;
+    display:grid;
+    grid-template-columns:1.15fr .85fr;
+    gap:60px;
+    align-items:center;
+    z-index:2;
+    position:relative;
+}
+
+.hero-grid.no-feature{
+    grid-template-columns:1fr;
+}
+
+.hero-grid.no-feature .hero-content{
+    max-width:800px;
+    margin:0 auto;
+    text-align:center;
+}
+
+.hero-grid.no-feature .hero-buttons{
+    justify-content:center;
+}
+
 .hero-content{
-    max-width:900px;
+    max-width:560px;
     z-index:2;
 }
 
@@ -187,7 +211,7 @@ HERO
 }
 
 .hero h1{
-    font-size:5rem;
+    font-size:4.4rem;
     line-height:1.1;
     margin-bottom:25px;
     font-family:'Playfair Display',serif;
@@ -195,12 +219,11 @@ HERO
 
 .hero h1 span{
     color:var(--blue);
+    display:block;
 }
 
 .hero p{
-    font-size:1.2rem;
-    max-width:750px;
-    margin:auto;
+    font-size:1.15rem;
     line-height:1.8;
     color:#555;
 }
@@ -208,9 +231,89 @@ HERO
 .hero-buttons{
     margin-top:40px;
     display:flex;
-    justify-content:center;
+    justify-content:flex-start;
     gap:20px;
     flex-wrap:wrap;
+}
+
+/* ===== HERO FEATURE (latest article postcard) ===== */
+
+.hero-feature{
+    display:flex;
+    justify-content:center;
+}
+
+.feature-card{
+    position:relative;
+    width:100%;
+    max-width:360px;
+    background:rgba(255,255,255,.75);
+    backdrop-filter:blur(20px);
+    border-radius:28px;
+    overflow:hidden;
+    box-shadow:0 25px 60px rgba(10,35,66,.18);
+    transform:rotate(-3deg);
+    transition:.5s ease;
+}
+
+.feature-card:hover{
+    transform:rotate(0deg) translateY(-8px);
+}
+
+.feature-ribbon{
+    position:absolute;
+    top:20px;
+    right:-46px;
+    background:var(--gold);
+    color:var(--navy);
+    font-weight:700;
+    font-size:12px;
+    letter-spacing:.03em;
+    padding:6px 52px;
+    transform:rotate(45deg);
+    box-shadow:0 4px 10px rgba(0,0,0,.15);
+    z-index:3;
+}
+
+.feature-image{
+    width:100%;
+    height:200px;
+    background-size:cover;
+    background-position:center;
+}
+
+.feature-body{
+    padding:26px;
+    text-align:left;
+}
+
+.feature-body .tag{
+    margin-bottom:12px;
+}
+
+.feature-body h3{
+    font-family:'Playfair Display',serif;
+    font-size:1.3rem;
+    line-height:1.3;
+    margin-bottom:10px;
+    color:var(--navy);
+}
+
+.feature-body p{
+    color:#555;
+    font-size:.92rem;
+    line-height:1.6;
+    margin-bottom:18px;
+}
+
+.feature-link{
+    color:var(--blue);
+    font-weight:600;
+    text-decoration:none;
+}
+
+.feature-link:hover{
+    text-decoration:underline;
 }
 
 .primary-btn{
@@ -327,12 +430,15 @@ ARTICLES
 }
 
 .article-card{
+    display:block;
     overflow:hidden;
     border-radius:30px;
     background:rgba(255,255,255,.7);
     backdrop-filter:blur(20px);
     box-shadow:0 20px 50px rgba(0,0,0,.08);
     transition:.4s;
+    text-decoration:none;
+    color:inherit;
 }
 
 .article-card:hover{
@@ -503,6 +609,29 @@ RESPONSIVE
 
 .hero h1{
 font-size:3rem;
+}
+
+.hero-grid{
+grid-template-columns:1fr;
+}
+
+.hero-content{
+max-width:600px;
+margin:0 auto;
+text-align:center;
+}
+
+.hero-buttons{
+justify-content:center;
+}
+
+.hero-feature{
+margin-top:50px;
+}
+
+.feature-card{
+transform:rotate(0deg);
+max-width:320px;
 }
 
 .stats{

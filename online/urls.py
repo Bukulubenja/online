@@ -19,6 +19,7 @@ urlpatterns = [
     path('payments/', include('payments.urls')),
     path('', include('certifications.urls')),
     path('', include('dashboard.urls')),
+    path('assignments/', include('assignments.urls')),
     path('api/', include(router.urls)),
 
 ]

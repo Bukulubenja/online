@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+{% load static %}
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ assignment.title }} - French Fluency Journal</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Inter, sans-serif;}
+body{background:#050b18;color:#fff;}
+
+nav{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:20px 60px;
+  background:rgba(255,255,255,0.03);
+  border-bottom:1px solid rgba(255,255,255,0.08);
+}
+
+.logo{font-family:"Playfair Display";font-size:20px;}
+.logo span{color:#d4af37;}
+
+.nav-links a{
+  color:rgba(255,255,255,0.8);
+  text-decoration:none;
+  margin-left:25px;
+  font-size:14px;
+}
+
+.nav-links a:hover{color:#d4af37;}
+
+.container{
+  max-width:700px;
+  margin:0 auto;
+  padding:50px 20px 80px;
+}
+
+.back-link{
+  display:inline-block;
+  margin-bottom:20px;
+  color:rgba(255,255,255,0.7);
+  text-decoration:none;
+  font-size:14px;
+}
+
+.back-link:hover{
+  color:#d4af37;
+}
+
+h1{
+  font-family:"Playfair Display";
+  font-size:30px;
+  margin-bottom:10px;
+}
+
+.summary{
+  opacity:0.7;
+  margin-bottom:25px;
+  font-size:14px;
+}
+
+.status{
+  display:inline-block;
+  font-weight:600;
+  font-size:12px;
+  padding:4px 12px;
+  border-radius:20px;
+  margin-bottom:20px;
+}
+
+.status-open{background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.8);}
+.status-due_soon{background:#d4af37;color:#000;}
+.status-overdue{background:#ff8080;color:#000;}
+.status-submitted{background:rgba(0,200,150,0.15);color:#00c896;}
+.status-graded{background:#00c896;color:#000;}
+
+.card{
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:14px;
+  padding:25px;
+  margin-bottom:20px;
+  line-height:1.7;
+}
+
+.card h3{
+  font-family:"Playfair Display";
+  margin-bottom:12px;
+  font-size:16px;
+}
+
+textarea{
+  width:100%;
+  min-height:140px;
+  padding:14px;
+  border-radius:12px;
+  border:1px solid rgba(255,255,255,0.1);
+  background:rgba(255,255,255,0.05);
+  color:#fff;
+  font-family:Inter, sans-serif;
+  resize:vertical;
+  margin-bottom:14px;
+}
+
+input[type="file"]{
+  color:rgba(255,255,255,0.7);
+  margin-bottom:14px;
+}
+
+.btn{
+  display:inline-block;
+  padding:10px 22px;
+  border:none;
+  border-radius:10px;
+  background:linear-gradient(135deg,#d4af37,#b88a2c);
+  color:#000;
+  font-weight:600;
+  cursor:pointer;
+}
+
+.grade{
+  font-family:"Playfair Display";
+  font-size:24px;
+  color:#00c896;
+  margin-bottom:10px;
+}
+
+.messages p{
+  color:#ff8080;
+  margin-bottom:15px;
+}
+.messages p.success{
+  color:#00c896;
+}
+</style>
+</head>
+
+<body>
+
+<nav>
+  <div class="logo">French <span>Fluency</span></div>
+  <div class="nav-links">
+    <a href="{% url 'assignments' %}">Assignments</a>
+  </div>
+</nav>
+
+<div class="container">
+
+  <a class="back-link" href="{% url 'assignments' %}">&larr; Back to Assignments</a>
+
+  <h1>{{ assignment.title }}</h1>
+  <p class="summary">
+    {{ assignment.lesson.module.course.title }} &middot; {{ assignment.points }} pts
+    {% if assignment.due_at %} &middot; Due {{ assignment.due_at|date:"Y-m-d H:i" }}{% endif %}
+  </p>
+
+  <span class="status status-{{ status }}">
+    {% if status == 'due_soon' %}Due soon
+    {% elif status == 'overdue' %}Overdue
+    {% elif status == 'submitted' %}Submitted
+    {% elif status == 'graded' %}Graded
+    {% else %}Open{% endif %}
+  </span>
+
+  {% if messages %}
+  <div class="messages">
+    {% for message in messages %}
+    <p class="{% if message.tags == 'success' %}success{% endif %}">{{ message }}</p>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <div class="card">
+    <h3>Instructions</h3>
+    <p>{{ assignment.instructions }}</p>
+  </div>
+
+  {% if submission and submission.grade is not None %}
+  <div class="card">
+    <h3>Your grade</h3>
+    <div class="grade">{{ submission.grade }}/{{ assignment.points }}</div>
+    {% if submission.feedback %}<p>{{ submission.feedback }}</p>{% endif %}
+  </div>
+  {% endif %}
+
+  {% if submission %}
+  <div class="card">
+    <h3>Your submission</h3>
+    <p>{{ submission.content|default:"(no written response)" }}</p>
+    {% if submission.file %}<p style="margin-top:10px;"><a href="{{ submission.file.url }}" style="color:#d4af37;" target="_blank">View attached file</a></p>{% endif %}
+    <p class="meta" style="opacity:0.6;font-size:13px;margin-top:10px;">Submitted {{ submission.submitted_at|date:"Y-m-d H:i" }}</p>
+  </div>
+  {% endif %}
+
+  <div class="card">
+    <h3>{% if submission %}Resubmit{% else %}Submit your work{% endif %}</h3>
+    <form method="post" action="{% url 'submit_assignment' assignment.id %}" enctype="multipart/form-data">
+      {% csrf_token %}
+      <textarea name="content" placeholder="Write your response here...">{% if submission %}{{ submission.content }}{% endif %}</textarea>
+      <input type="file" name="file">
+      <button class="btn" type="submit">{% if submission %}Resubmit{% else %}Submit{% endif %}</button>
+    </form>
+  </div>
+
+</div>
+
+</body>
+</html>

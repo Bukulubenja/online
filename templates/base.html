@@ -30,12 +30,14 @@
         <a href="#" class="mobile-cta">Start Learning</a>
     </div>
 
-    <a href="/user/login/" class="cta-btn desktop-only">
+    <a href="{% url 'login' %}" class="cta-btn desktop-only">
         Start Learning
     </a>
 </nav>
 
-<section class="hero">
+<section class="hero" id="home">
+
+<div class="hero-grid{% if not latest_article %} no-feature{% endif %}">
 
 <div class="hero-content">
 
@@ -56,15 +58,72 @@ resources designed to accelerate your French fluency.
 
 <div class="hero-buttons">
 
-<a href="/user/login/" class="primary-btn">
+<a href="{% url 'login' %}" class="primary-btn">
 Start Learning
 </a>
 
-<a href="/articles" class="secondary-btn">
+<a href="{% url 'articles' %}" class="secondary-btn">
 Explore Articles
 </a>
 
 </div>
+
+</div>
+
+{% if latest_article %}
+<div class="hero-feature">
+<div class="feature-card">
+<div class="feature-ribbon">Latest Read</div>
+<div class="feature-image"
+     style="background-image:url('{% if latest_article.image %}{{ latest_article.image.url }}{% else %}https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=1200{% endif %}');">
+</div>
+<div class="feature-body">
+<div class="tag">{{ latest_article.category }}</div>
+<h3>{{ latest_article.title }}</h3>
+<p>{{ latest_article.content|truncatewords:18 }}</p>
+<a href="{% url 'article_detail' latest_article.pk %}" class="feature-link">Read the article &rarr;</a>
+</div>
+</div>
+</div>
+{% endif %}
+
+</div>
+
+</section>
+
+<section class="articles" id="articles">
+
+<div class="section-title">
+<h2>Featured Articles</h2>
+</div>
+
+<div class="article-grid">
+{% for article in articles %}
+<a class="article-card" href="{% url 'article_detail' article.pk %}">
+
+<div class="article-image"
+     style="background-image:url('{% if article.image %}{{ article.image.url }}{% else %}https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=1200{% endif %}');">
+</div>
+<div class="article-content">
+
+<div class="tag">{{ article.category }}</div>
+
+<h3>{{ article.title }}</h3>
+
+<p>
+{{ article.content|truncatewords:30 }}
+</p>
+
+<br>
+
+<div class="meta">
+{{ article.created_at|date:"F Y" }}
+</div>
+
+</div>
+
+</a>
+{% endfor %}
 
 </div>
 
@@ -94,7 +153,7 @@ Explore Articles
 
 </section>
 
-<section class="categories">
+<section class="categories" id="resources">
 
 <div class="section-title">
 <h2>Featured Categories</h2>
@@ -130,47 +189,6 @@ Explore Articles
 
 </section>
 
-<section class="articles">
-
-<div class="section-title">
-<h2>Featured Articles</h2>
-</div>
-
-<div class="article-grid">
-{% for article in articles %}
-<div class="article-card">
-
-<div class="article-image"
-     style="background-image:url('{% if article.image %}{{ article.image.url }}{% else %}https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=1200{% endif %}');">
-</div>
-<div class="article-content">
-
-<div class="tag">{{ article.category }}</div>
-
-<h3>{{ article.title }}</h3>
-
-<p>
-{{ article.content|truncatewords:30 }}
-</p>
-
-<br>
-
-<div class="meta">
-8 min read • June 2026
-</div>
-
-</div>
-
-</div>
-{% endfor %}
-
-
-</div>
-
-</div>
-
-</section>
-
 <section class="journey">
 
 <div class="section-title">
@@ -190,7 +208,7 @@ Explore Articles
 
 </section>
 
-<section class="testimonials">
+<section class="testimonials" id="community">
 
 <div class="section-title">
 <h2>Student Success Stories</h2>
@@ -216,7 +234,7 @@ Excellent DELF preparation guides and vocabulary resources.
 
 </section>
 
-<section class="newsletter">
+<section class="newsletter" id="contact">
 
 <div class="newsletter-box">
 
@@ -278,6 +296,6 @@ Premium French learning resources for learners worldwide.
 </div>
 
 </footer>
-script src="{% static 'js/base.js' %}"></script>
+<script src="{% static 'js/base.js' %}"></script>
 </body>
 </html>

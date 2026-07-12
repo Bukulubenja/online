@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Course, Lesson, Module
+from .models import Course, Lesson, Material, Module
 
 
 class LessonInline(admin.TabularInline):
@@ -26,3 +26,9 @@ class ModuleAdmin(admin.ModelAdmin):
     list_display = ('title', 'course', 'order')
     list_filter = ('course',)
     inlines = [LessonInline]
+
+
+@admin.register(Material)
+class MaterialAdmin(admin.ModelAdmin):
+    list_display = ('title', 'course', 'material_type', 'updated_at')
+    list_filter = ('material_type', 'course')

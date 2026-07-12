@@ -116,9 +116,9 @@ nav{
   <div class="logo">French <span>Fluency</span></div>
   <div class="nav-links">
     <a href="/">Home</a>
-    <a href="/articles">Articles</a>
+    <a href="{% url 'articles' %}">Articles</a>
     <a href="{% url 'courses' %}">Courses</a>
-    <a href="/user/login/">Login</a>
+    <a href="{% url 'login' %}">Login</a>
   </div>
 </nav>
 

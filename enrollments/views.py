@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_POST
 
-from courses.models import Course, Lesson
+from courses.models import Course, Lesson, Material
 
 from .models import Enrollment, LessonProgress
 
@@ -27,6 +27,13 @@ def my_courses(request):
     return render(request, 'my_courses.html', {'enrollments': enrollments})
 
 
+@login_required(login_url='login')
+def materials(request):
+    course_ids = Enrollment.objects.filter(student=request.user).values_list('course_id', flat=True)
+    items = Material.objects.filter(course_id__in=course_ids).select_related('course')
+    return render(request, 'materials.html', {'materials': items})
+
+
 def _get_enrollment_for_lesson(request, lesson):
     return Enrollment.objects.filter(
         student=request.user, course=lesson.module.course
@@ -46,6 +53,7 @@ def lesson_detail(request, lesson_id):
     return render(request, 'lesson_detail.html', {
         'lesson': lesson,
         'completed': completed,
+        'lesson_assignments': lesson.assignments.all(),
     })
 
 

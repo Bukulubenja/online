@@ -155,9 +155,14 @@ h1{
   <div class="logo">French <span>Fluency</span></div>
   <div class="nav-links">
     <a href="/">Home</a>
-    <a href="/articles">Articles</a>
+    <a href="{% url 'articles' %}">Articles</a>
     <a href="{% url 'courses' %}">Courses</a>
-    <a href="/user/login/">Login</a>
+    {% if user.is_authenticated %}
+    <a href="{% url 'materials' %}">Materials</a>
+    <a href="{% url 'assignments' %}">Assignments</a>
+    {% else %}
+    <a href="{% url 'login' %}">Login</a>
+    {% endif %}
   </div>
 </nav>
 

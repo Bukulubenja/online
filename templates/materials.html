@@ -4,7 +4,7 @@
 {% load static %}
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>My Courses - French Fluency Journal</title>
+<title>Materials - French Fluency Journal</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Inter, sans-serif;}
@@ -43,23 +43,24 @@ h1{
   margin-bottom:30px;
 }
 
-.course-row{
-  display:block;
+.material-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:16px;
   background:rgba(255,255,255,0.04);
   border:1px solid rgba(255,255,255,0.08);
   border-radius:14px;
   padding:20px 25px;
   margin-bottom:18px;
-  text-decoration:none;
-  color:#fff;
   transition:0.3s;
 }
 
-.course-row:hover{
+.material-row:hover{
   border-color:#d4af37;
 }
 
-.level-tag{
+.type-tag{
   display:inline-block;
   background:#d4af37;
   color:#000;
@@ -70,22 +71,28 @@ h1{
   margin-bottom:10px;
 }
 
-.course-row h3{
+.material-row h3{
   font-family:"Playfair Display";
-  margin-bottom:10px;
+  margin-bottom:6px;
+  font-size:18px;
 }
 
-.progress-track{
-  height:8px;
-  background:rgba(255,255,255,0.08);
-  border-radius:50px;
-  overflow:hidden;
-  margin-top:8px;
+.meta{
+  opacity:0.6;
+  font-size:13px;
 }
 
-.progress-fill{
-  height:100%;
-  background:linear-gradient(90deg,#d4af37,#b88a2c);
+.btn{
+  display:inline-block;
+  padding:10px 22px;
+  border:none;
+  border-radius:10px;
+  background:linear-gradient(135deg,#d4af37,#b88a2c);
+  color:#000;
+  font-weight:600;
+  cursor:pointer;
+  text-decoration:none;
+  white-space:nowrap;
 }
 
 .empty{
@@ -100,7 +107,6 @@ h1{
   <div class="logo">French <span>Fluency</span></div>
   <div class="nav-links">
     <a href="/">Home</a>
-    <a href="{% url 'courses' %}">Courses</a>
     <a href="{% url 'my_courses' %}">My Courses</a>
     <a href="{% url 'materials' %}">Materials</a>
     <a href="{% url 'assignments' %}">Assignments</a>
@@ -110,19 +116,23 @@ h1{
 
 <div class="container">
 
-  <h1>My Courses</h1>
+  <h1>Materials</h1>
 
-  {% for enrollment in enrollments %}
-  <a class="course-row" href="{% url 'course_detail' enrollment.course.slug %}">
-    <div class="level-tag">{{ enrollment.course.level }}</div>
-    <h3>{{ enrollment.course.title }}</h3>
-    <div>{{ enrollment.progress_percent }}% complete</div>
-    <div class="progress-track">
-      <div class="progress-fill" style="width:{{ enrollment.progress_percent }}%"></div>
+  {% for material in materials %}
+  <div class="material-row">
+    <div>
+      <div class="type-tag">{{ material.get_material_type_display }}</div>
+      <h3>{{ material.title }}</h3>
+      <div class="meta">{{ material.course.title }} &middot; Updated {{ material.updated_at|date:"Y-m-d" }}</div>
     </div>
-  </a>
+    {% if material.file %}
+    <a class="btn" href="{{ material.file.url }}" target="_blank">Download</a>
+    {% elif material.external_url %}
+    <a class="btn" href="{{ material.external_url }}" target="_blank">Open</a>
+    {% endif %}
+  </div>
   {% empty %}
-  <p class="empty">You haven't enrolled in any courses yet. <a href="{% url 'courses' %}" style="color:#d4af37;">Browse courses</a>.</p>
+  <p class="empty">No materials available yet. Enroll in a course to unlock its resources.</p>
   {% endfor %}
 
 </div>

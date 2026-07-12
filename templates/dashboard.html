@@ -278,16 +278,13 @@ body{
     <div class="nav-item">🏠 Dashboard</div>
     <a href="{% url 'courses' %}" style="text-decoration:none; color:inherit;"><div class="nav-item">📘 Courses</div></a>
     <a href="{% url 'my_courses' %}" style="text-decoration:none; color:inherit;"><div class="nav-item">🎓 My Courses</div></a>
+    <a href="{% url 'materials' %}" style="text-decoration:none; color:inherit;"><div class="nav-item">📂 Materials</div></a>
+    <a href="{% url 'assignments' %}" style="text-decoration:none; color:inherit;"><div class="nav-item">📋 Assignments</div></a>
     <a href="{% url 'my_exams' %}" style="text-decoration:none; color:inherit;"><div class="nav-item">📝 Certifications</div></a>
     <a href="{% url 'my_certificates' %}" style="text-decoration:none; color:inherit;"><div class="nav-item">📜 My Certificates</div></a>
     {% if user.role == 'main_admin' or user.is_superuser %}
     <a href="{% url 'admin_dashboard' %}" style="text-decoration:none; color:inherit;"><div class="nav-item">🛠 Admin Dashboard</div></a>
     {% endif %}
-    <div class="nav-item">📊 Progress</div>
-    <div class="nav-item">🧠 Vocabulary</div>
-    <div class="nav-item">🎧 Listening</div>
-    <div class="nav-item">💬 Community</div>
-    <div class="nav-item">⚙ Settings</div>
     <a href="{% url 'logout' %}" style="text-decoration:none; color:inherit;"><div class="nav-item">🚪 Logout</div></a>
   </div>
 
@@ -299,7 +296,7 @@ body{
       <h2>Welcome back, {{ user.first_name|default:user.username }}</h2>
       <div class="profile">
         <div class="avatar"></div>
-        <div>Level: B1</div>
+        <div>Level: {{ user.get_current_level_display|default:"Not set" }}</div>
       </div>
     </div>
 
@@ -309,10 +306,10 @@ body{
       <p>Continue where you left off. Stay consistent and improve daily.</p>
 
       <div class="stats">
-        <div class="stat">🔥 12 Lessons Completed</div>
-        <div class="stat">⏱ 5h Study Time</div>
-        <div class="stat">📈 70% Progress</div>
-        <div class="stat">🏆 Streak: 6 Days</div>
+        <div class="stat">🔥 {{ completed_lessons }} Lesson{{ completed_lessons|pluralize }} Completed</div>
+        <div class="stat">📈 {{ avg_progress }}% Avg. Progress</div>
+        <div class="stat">🎓 {{ enrollments|length }} Course{{ enrollments|length|pluralize }} Enrolled</div>
+        <div class="stat">🏆 {{ certificates_count }} Certificate{{ certificates_count|pluralize }} Earned</div>
       </div>
     </div>
 
@@ -320,34 +317,42 @@ body{
     <div class="grid">
 
       <!-- LEFT -->
-      <div class="card fade">
+      <div class="card fade" style="{% if not continue_enrollment %}display:flex;flex-direction:column;justify-content:center;{% endif %}">
         <h3>Continue Learning</h3>
 
+        {% if continue_enrollment %}
         <div class="progress">
-          <div class="bar"></div>
+          <div class="bar" style="width:{{ continue_enrollment.progress_percent }}%"></div>
         </div>
 
-        <div class="lesson">📘 Grammar: Past Tense <span>Continue</span></div>
-        <div class="lesson">🗣 Pronunciation Practice <span>Start</span></div>
-        <div class="lesson">📖 Reading Comprehension <span>Locked</span></div>
+        <div class="lesson">
+          📘 {{ continue_enrollment.course.title }}
+          <span><a href="{% url 'course_detail' continue_enrollment.course.slug %}" style="color:inherit;">Continue</a></span>
+        </div>
+        {% else %}
+        <p style="opacity:0.7;margin-top:10px;">
+          {% if enrollments %}You've completed all your enrolled courses.{% else %}You haven't enrolled in any courses yet.{% endif %}
+          <a href="{% url 'courses' %}" style="color:#d4af37;">Browse courses</a>.
+        </p>
+        {% endif %}
       </div>
 
       <!-- RIGHT -->
       <div class="right">
 
         <div class="card fade">
-          <h3>Daily Challenge</h3>
-          <p>Translate 5 French sentences</p>
+          <h3>My Courses</h3>
+          <p>{{ enrollments|length }} enrolled &middot; <a href="{% url 'my_courses' %}" style="color:#d4af37;text-decoration:none;">View all</a></p>
         </div>
 
         <div class="card fade">
-          <h3>Upcoming Lesson</h3>
-          <p>French Conversation Basics</p>
+          <h3>Certifications</h3>
+          <p>{{ certificates_count }} earned &middot; <a href="{% url 'my_exams' %}" style="color:#d4af37;text-decoration:none;">My Exams</a></p>
         </div>
 
         <div class="card fade">
-          <h3>Achievement</h3>
-          <p>🏅 Beginner Speaker Unlocked</p>
+          <h3>Certificates</h3>
+          <p><a href="{% url 'my_certificates' %}" style="color:#d4af37;text-decoration:none;">View my certificates</a></p>
         </div>
 
       </div>

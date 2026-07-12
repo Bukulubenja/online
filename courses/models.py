@@ -63,3 +63,26 @@ class Lesson(models.Model):
 
     def __str__(self):
         return f'{self.module.title} - {self.title}'
+
+
+class Material(models.Model):
+    TYPE_CHOICES = [
+        ('pdf', 'PDF'),
+        ('audio', 'Audio'),
+        ('video', 'Video'),
+        ('article', 'Article'),
+    ]
+
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='materials')
+    title = models.CharField(max_length=200)
+    material_type = models.CharField(max_length=20, choices=TYPE_CHOICES)
+    file = models.FileField(upload_to='materials/', blank=True)
+    external_url = models.URLField(blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['-updated_at']
+
+    def __str__(self):
+        return f'{self.title} ({self.course.title})'
