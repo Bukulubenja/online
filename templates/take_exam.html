@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+{% load static %}
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ attempt.exam.title }} - French Fluency Journal</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Inter, sans-serif;}
+body{background:#050b18;color:#fff;}
+
+nav{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:20px 60px;
+  background:rgba(255,255,255,0.03);
+  border-bottom:1px solid rgba(255,255,255,0.08);
+}
+
+.logo{font-family:"Playfair Display";font-size:20px;}
+.logo span{color:#d4af37;}
+
+.nav-links a{
+  color:rgba(255,255,255,0.8);
+  text-decoration:none;
+  margin-left:25px;
+  font-size:14px;
+}
+
+.container{
+  max-width:700px;
+  margin:0 auto;
+  padding:50px 20px 80px;
+}
+
+h1{
+  font-family:"Playfair Display";
+  font-size:30px;
+  margin-bottom:10px;
+}
+
+.summary{
+  opacity:0.7;
+  margin-bottom:30px;
+}
+
+.question{
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:14px;
+  padding:22px 25px;
+  margin-bottom:18px;
+}
+
+.section-tag{
+  display:inline-block;
+  background:rgba(255,255,255,0.06);
+  padding:4px 12px;
+  border-radius:20px;
+  font-size:12px;
+  margin-bottom:10px;
+  text-transform:capitalize;
+}
+
+.q-text{
+  margin-bottom:14px;
+  font-weight:500;
+}
+
+.choice{
+  display:block;
+  padding:10px 14px;
+  border-radius:10px;
+  border:1px solid rgba(255,255,255,0.1);
+  margin-bottom:8px;
+  cursor:pointer;
+  transition:0.3s;
+}
+
+.choice:hover{
+  border-color:#d4af37;
+}
+
+.choice input{
+  margin-right:10px;
+}
+
+.btn{
+  width:100%;
+  padding:14px;
+  border:none;
+  border-radius:12px;
+  background:linear-gradient(135deg,#d4af37,#b88a2c);
+  color:#000;
+  font-weight:600;
+  cursor:pointer;
+  margin-top:10px;
+}
+</style>
+</head>
+
+<body>
+
+<nav>
+  <div class="logo">French <span>Fluency</span></div>
+  <div class="nav-links">
+    <a href="{% url 'my_exams' %}">My Exams</a>
+  </div>
+</nav>
+
+<div class="container">
+
+  <h1>{{ attempt.exam.title }}</h1>
+  <p class="summary">{{ attempt.exam.duration_minutes }} minutes &middot; Passing score {{ attempt.exam.passing_score }}%</p>
+
+  <form method="post" action="{% url 'submit_exam' attempt.id %}">
+    {% csrf_token %}
+
+    {% for question in questions %}
+    <div class="question">
+      <div class="section-tag">{{ question.get_section_display }}</div>
+      <p class="q-text">{{ question.text }}</p>
+      {% for choice in question.choices.all %}
+      <label class="choice">
+        <input type="radio" name="question_{{ question.id }}" value="{{ choice.id }}" required>{{ choice.text }}
+      </label>
+      {% endfor %}
+    </div>
+    {% endfor %}
+
+    <button class="btn" type="submit">Submit exam</button>
+  </form>
+
+</div>
+
+</body>
+</html>
