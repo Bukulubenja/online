@@ -27,6 +27,7 @@
         <a href="#resources">Resources</a>
         <a href="#community">Community</a>
         <a href="#contact">Contact</a>
+        <a href="{% url 'book_trial' %}">Book a Trial</a>
         <a href="#" class="mobile-cta">Start Learning</a>
     </div>
 
@@ -62,8 +63,8 @@ resources designed to accelerate your French fluency.
 Start Learning
 </a>
 
-<a href="{% url 'articles' %}" class="secondary-btn">
-Explore Articles
+<a href="{% url 'book_trial' %}" class="secondary-btn">
+Book a Free Trial
 </a>
 
 </div>
@@ -246,15 +247,23 @@ Join Thousands Learning French Every Week
 Get weekly lessons, study plans, vocabulary updates and exam tips.
 </p>
 
-<form class="newsletter-form">
+<form class="newsletter-form" method="post" action="{% url 'subscribe' %}">
+{% csrf_token %}
+<input type="email" name="email" placeholder="Enter your email" required>
 
-<input type="email" placeholder="Enter your email">
-
-<button>
+<button type="submit">
 Subscribe
 </button>
 
 </form>
+
+{% if messages %}
+<div class="newsletter-messages">
+    {% for message in messages %}
+    <p class="{% if message.tags == 'error' %}error{% endif %}">{{ message }}</p>
+    {% endfor %}
+</div>
+{% endif %}
 
 </div>
 

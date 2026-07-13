@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+{% load static %}
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Schedule - French Fluency Journal</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'css/base.css' %}">
+<style>
+.page-wrap{
+    max-width:900px;
+    margin:0 auto;
+    padding:160px 20px 100px;
+}
+
+.page-wrap h1{
+    font-family:'Playfair Display',serif;
+    color:var(--navy);
+    font-size:2.2rem;
+    margin-bottom:10px;
+}
+
+.subtitle{
+    color:#888;
+    margin-bottom:30px;
+}
+
+h2.section-title{
+    font-family:'Playfair Display',serif;
+    color:var(--navy);
+    font-size:1.3rem;
+    margin:40px 0 18px;
+}
+
+.session-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:16px;
+    background:#f8f8f8;
+    border-radius:18px;
+    padding:22px 28px;
+    margin-bottom:18px;
+}
+
+.session-row h3{
+    font-family:'Playfair Display',serif;
+    color:var(--navy);
+    margin-bottom:6px;
+    font-size:1.15rem;
+}
+
+.meta{
+    color:#888;
+    font-size:15px;
+}
+
+.seats{
+    font-size:15px;
+    color:var(--blue);
+    font-weight:600;
+    margin-top:6px;
+}
+
+.btn{
+    border:none;
+    border-radius:50px;
+    padding:10px 22px;
+    font-size:15px;
+    font-weight:600;
+    cursor:pointer;
+    white-space:nowrap;
+}
+
+.btn-book{background:linear-gradient(135deg,var(--blue),var(--navy));color:white;}
+.btn-book[disabled]{background:#ddd;color:#999;cursor:not-allowed;}
+.btn-cancel{background:rgba(239,65,53,.12);color:#a8281d;}
+
+.empty-state{
+    color:#777;
+}
+
+.messages p{
+    padding:14px 22px;
+    border-radius:12px;
+    font-weight:600;
+    background:rgba(212,175,55,.15);
+    color:var(--navy);
+    margin-bottom:15px;
+}
+
+.messages p.success{
+    background:rgba(26,156,111,.15);
+    color:#1a9c6f;
+}
+</style>
+</head>
+
+<body>
+
+<nav>
+    <div class="logo">French <span>Fluency</span></div>
+    <div class="nav-links">
+        <a href="{% url 'home' %}">Home</a>
+        <a href="{% url 'my_courses' %}">My Courses</a>
+        <a href="{% url 'materials' %}">Materials</a>
+        <a href="{% url 'assignments' %}">Assignments</a>
+        <a href="{% url 'schedule' %}">Schedule</a>
+        <a href="{% url 'dashboard' %}">Dashboard</a>
+    </div>
+</nav>
+
+<div class="page-wrap">
+
+    <h1>My Schedule</h1>
+    <p class="subtitle">Your own timetable &mdash; book only the classes that fit your week.</p>
+
+    {% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+        <p class="{% if message.tags == 'success' %}success{% endif %}">{{ message }}</p>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <h2 class="section-title">Upcoming classes</h2>
+    {% for booking in my_bookings %}
+    <div class="session-row">
+        <div>
+            <h3>{{ booking.session.course.title }}</h3>
+            <div class="meta">
+                with {{ booking.session.teacher.get_full_name|default:booking.session.teacher.username }}
+                &middot; {{ booking.session.start_time|date:"D, d M Y H:i" }}&ndash;{{ booking.session.end_time|date:"H:i" }}
+            </div>
+        </div>
+        <form method="post" action="{% url 'cancel_booking' booking.id %}">
+            {% csrf_token %}
+            <button class="btn btn-cancel" type="submit">Cancel</button>
+        </form>
+    </div>
+    {% empty %}
+    <p class="empty-state">You haven't booked any classes yet.</p>
+    {% endfor %}
+
+    <h2 class="section-title">Available classes for your courses</h2>
+    {% for session in available_sessions %}
+    <div class="session-row">
+        <div>
+            <h3>{{ session.course.title }}</h3>
+            <div class="meta">
+                with {{ session.teacher.get_full_name|default:session.teacher.username }}
+                &middot; {{ session.start_time|date:"D, d M Y H:i" }}&ndash;{{ session.end_time|date:"H:i" }}
+            </div>
+            <div class="seats">{{ session.seats_left }} seat{{ session.seats_left|pluralize }} left</div>
+        </div>
+        <form method="post" action="{% url 'book_session' session.id %}">
+            {% csrf_token %}
+            <button class="btn btn-book" type="submit" {% if session.seats_left <= 0 %}disabled{% endif %}>Book</button>
+        </form>
+    </div>
+    {% empty %}
+    <p class="empty-state">No open classes right now for your enrolled courses.</p>
+    {% endfor %}
+
+</div>
+
+</body>
+</html>

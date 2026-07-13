@@ -20,6 +20,7 @@ urlpatterns = [
     path('', include('certifications.urls')),
     path('', include('dashboard.urls')),
     path('assignments/', include('assignments.urls')),
+    path('portal/schedule/', include('schedules.urls')),
     path('api/', include(router.urls)),
 
 ]

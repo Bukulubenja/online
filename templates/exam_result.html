@@ -6,72 +6,52 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Exam Result - French Fluency Journal</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'css/base.css' %}">
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Inter, sans-serif;}
-body{background:#050b18;color:#fff;}
-
-nav{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:20px 60px;
-  background:rgba(255,255,255,0.03);
-  border-bottom:1px solid rgba(255,255,255,0.08);
+.page-wrap{
+    max-width:600px;
+    margin:0 auto;
+    padding:160px 20px 100px;
 }
 
-.logo{font-family:"Playfair Display";font-size:20px;}
-.logo span{color:#d4af37;}
-
-.nav-links a{
-  color:rgba(255,255,255,0.8);
-  text-decoration:none;
-  margin-left:25px;
-  font-size:14px;
+.page-wrap h1{
+    font-family:'Playfair Display',serif;
+    font-size:2rem;
+    margin-bottom:20px;
 }
 
-.container{
-  max-width:600px;
-  margin:0 auto;
-  padding:50px 20px 80px;
-}
-
-h1{
-  font-family:"Playfair Display";
-  font-size:30px;
-  margin-bottom:20px;
-}
-
-h1.pass{color:#00c896;}
-h1.fail{color:#ff8080;}
+h1.pass{color:#1a9c6f;}
+h1.fail{color:#a8281d;}
 
 .card{
-  background:rgba(255,255,255,0.04);
-  border:1px solid rgba(255,255,255,0.08);
-  border-radius:14px;
-  padding:25px;
+    background:#f8f8f8;
+    border-radius:18px;
+    padding:26px;
 }
 
 .row{
-  display:flex;
-  justify-content:space-between;
-  padding:10px 0;
-  border-top:1px solid rgba(255,255,255,0.06);
-  font-size:14px;
+    display:flex;
+    justify-content:space-between;
+    padding:12px 0;
+    border-top:1px solid #e6e6e6;
+    font-size:16px;
+    color:#444;
 }
 
 .row:first-of-type{
-  border-top:none;
+    border-top:none;
 }
 
 .actions{
-  margin-top:25px;
+    margin-top:25px;
 }
 
 .actions a{
-  color:#d4af37;
-  text-decoration:none;
-  margin-right:20px;
-  font-size:14px;
+    color:var(--blue);
+    text-decoration:none;
+    font-weight:600;
+    margin-right:20px;
+    font-size:16px;
 }
 </style>
 </head>
@@ -79,32 +59,32 @@ h1.fail{color:#ff8080;}
 <body>
 
 <nav>
-  <div class="logo">French <span>Fluency</span></div>
-  <div class="nav-links">
-    <a href="{% url 'my_exams' %}">My Exams</a>
-    <a href="{% url 'my_certificates' %}">My Certificates</a>
-  </div>
+    <div class="logo">French <span>Fluency</span></div>
+    <div class="nav-links">
+        <a href="{% url 'my_exams' %}">My Exams</a>
+        <a href="{% url 'my_certificates' %}">My Certificates</a>
+    </div>
 </nav>
 
-<div class="container">
+<div class="page-wrap">
 
-  <h1 class="{% if attempt.passed %}pass{% else %}fail{% endif %}">
-    {% if attempt.passed %}Congratulations, you passed!{% else %}Not passed this time{% endif %}
-  </h1>
+    <h1 class="{% if attempt.passed %}pass{% else %}fail{% endif %}">
+        {% if attempt.passed %}Congratulations, you passed!{% else %}Not passed this time{% endif %}
+    </h1>
 
-  <div class="card">
-    <div class="row"><span>Exam</span><span>{{ attempt.exam.title }}</span></div>
-    <div class="row"><span>Score</span><span>{{ attempt.score }}%</span></div>
-    <div class="row"><span>Passing score</span><span>{{ attempt.exam.passing_score }}%</span></div>
-    <div class="row"><span>Submitted</span><span>{{ attempt.submitted_at|date:"Y-m-d H:i" }}</span></div>
-  </div>
+    <div class="card">
+        <div class="row"><span>Exam</span><span>{{ attempt.exam.title }}</span></div>
+        <div class="row"><span>Score</span><span>{{ attempt.score }}%</span></div>
+        <div class="row"><span>Passing score</span><span>{{ attempt.exam.passing_score }}%</span></div>
+        <div class="row"><span>Submitted</span><span>{{ attempt.submitted_at|date:"Y-m-d H:i" }}</span></div>
+    </div>
 
-  <div class="actions">
-    {% if certificate %}
-    <a href="{% url 'certificate_verify' certificate.certificate_id %}">View certificate ({{ certificate.certificate_id }})</a>
-    {% endif %}
-    <a href="{% url 'my_exams' %}">My Exams</a>
-  </div>
+    <div class="actions">
+        {% if certificate %}
+        <a href="{% url 'certificate_verify' certificate.certificate_id %}">View certificate ({{ certificate.certificate_id }})</a>
+        {% endif %}
+        <a href="{% url 'my_exams' %}">My Exams</a>
+    </div>
 
 </div>
 

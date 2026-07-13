@@ -267,7 +267,7 @@ HERO
     background:var(--gold);
     color:var(--navy);
     font-weight:700;
-    font-size:12px;
+    font-size:14px;
     letter-spacing:.03em;
     padding:6px 52px;
     transform:rotate(45deg);
@@ -465,7 +465,7 @@ ARTICLES
     border-radius:20px;
     display:inline-block;
     margin-bottom:15px;
-    font-size:13px;
+    font-size:15px;
 }
 
 .article-content h3{
@@ -572,6 +572,24 @@ NEWSLETTER
     background:var(--gold);
     cursor:pointer;
     font-weight:700;
+}
+
+.newsletter-messages{
+    margin-top:20px;
+}
+
+.newsletter-messages p{
+    display:inline-block;
+    padding:12px 24px;
+    border-radius:30px;
+    background:rgba(212,175,55,.2);
+    color:var(--gold);
+    font-weight:600;
+}
+
+.newsletter-messages p.error{
+    background:rgba(239,65,53,.2);
+    color:#ff9d94;
 }
 
 /* ======================
@@ -798,7 +816,7 @@ html{
 
 /* BADGE */
 .badge{
-    font-size:12px;
+    font-size:14px;
     padding:10px 15px;
 }
 
@@ -847,7 +865,7 @@ html{
 }
 
 footer a{
-    font-size:14px;
+    font-size:16px;
 }
 
 }

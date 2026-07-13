@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'certifications',
     'dashboard',
     'assignments',
+    'schedules',
 ]
 
 AUTH_USER_MODEL = 'user.User'

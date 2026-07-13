@@ -36,13 +36,21 @@ def certificate_verify(request, certificate_id):
 @login_required(login_url='login')
 def my_exams(request):
     exams = Exam.objects.filter(is_published=True)
-    attempts = {a.exam_id: a for a in ExamAttempt.objects.filter(student=request.user)}
+    attempts = {}
+    for attempt in ExamAttempt.objects.filter(student=request.user).order_by('id'):
+        attempts[attempt.exam_id] = attempt
     rows = []
     for exam in exams:
+        attempt = attempts.get(exam.id)
+        eligible = _is_eligible(request.user, exam.level)
+        can_retake = bool(
+            attempt and attempt.submitted_at is not None and not attempt.passed and eligible
+        )
         rows.append({
             'exam': exam,
-            'attempt': attempts.get(exam.id),
-            'eligible': _is_eligible(request.user, exam.level),
+            'attempt': attempt,
+            'eligible': eligible,
+            'can_retake': can_retake,
         })
     return render(request, 'my_exams.html', {'rows': rows})
 

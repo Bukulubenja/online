@@ -8,9 +8,11 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
 
 <style>
-/* =========================
-   GLOBAL STYLES
-========================= */
+:root{
+  --navy:#0A2342;
+  --gold:#D4AF37;
+  --blue:#0055A4;
+}
 
 * {
   margin: 0;
@@ -20,156 +22,113 @@
 }
 
 body {
-  background: radial-gradient(circle at top, #0a2342, #050b18);
-  color: #fff;
+  min-height:100vh;
+  background: #FAFAFA;
+  color: var(--navy);
   overflow-x: hidden;
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:60px 20px;
 }
 
-/* Animated background glow */
-.bg-glow {
-  position: fixed;
+.bg-blob {
+  position: absolute;
   width: 600px;
   height: 600px;
-  background: rgba(212,175,55,0.15);
-  filter: blur(120px);
+  background: radial-gradient(circle, rgba(212,175,55,.10), transparent 70%);
   border-radius: 50%;
   top: -200px;
   left: -150px;
-  animation: floatGlow 8s ease-in-out infinite;
 }
-
-@keyframes floatGlow {
-  0%,100% { transform: translateY(0); }
-  50% { transform: translateY(40px); }
-}
-
-/* =========================
-   CONTAINER
-========================= */
 
 .container {
-  max-width: 1100px;
-  margin: auto;
-  padding: 60px 20px;
+  position:relative;
+  z-index:2;
+  max-width: 460px;
+  width:100%;
+}
+
+.logo{
+  font-family:'Playfair Display',serif;
+  font-size:22px;
+  font-weight:700;
+  color:var(--navy);
+  text-align:center;
+  margin-bottom:20px;
+}
+
+.logo span{
+  color:var(--gold);
 }
 
 /* HEADER */
 .header {
   text-align: center;
-  margin-bottom: 40px;
+  margin-bottom: 30px;
 }
 
 .header h1 {
   font-family: "Playfair Display";
-  font-size: 42px;
-  letter-spacing: 1px;
+  font-size: 32px;
+  color:var(--navy);
 }
 
 .header p {
-  opacity: 0.7;
-  margin-top: 10px;
+  color:#777;
+  margin-top: 8px;
 }
 
-/* =========================
-   PROGRESS STEPPER
-========================= */
-
-.stepper {
-  display: flex;
-  justify-content: space-between;
-  margin: 40px 0;
-  position: relative;
+.messages p{
+  color:#a8281d;
+  text-align:center;
+  font-size:15px;
+  font-weight:600;
+  margin-bottom:15px;
 }
 
-.stepper::before {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 0;
-  width: 100%;
-  height: 2px;
-  background: rgba(255,255,255,0.1);
-  z-index: 0;
-}
-
-.step {
-  z-index: 1;
-  text-align: center;
-  flex: 1;
-  position: relative;
-}
-
-.circle {
-  width: 40px;
-  height: 40px;
-  margin: auto;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.08);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  backdrop-filter: blur(10px);
-  transition: 0.4s;
-}
-
-.step.active .circle {
-  background: #d4af37;
-  transform: scale(1.2);
-}
-
-.step.completed .circle {
-  background: #00c896;
-}
-
-.step span {
-  display: block;
-  margin-top: 10px;
-  font-size: 12px;
-  opacity: 0.7;
-}
-
-/* =========================
-   CARD SYSTEM
-========================= */
-
+/* CARD */
 .card {
-  background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(255,255,255,0.1);
-  backdrop-filter: blur(20px);
-  border-radius: 18px;
-  padding: 30px;
-  box-shadow: 0 20px 60px rgba(0,0,0,0.4);
-  transition: 0.5s ease;
-  animation: fadeUp 0.8s ease;
+  background: white;
+  border-radius: 24px;
+  padding: 36px;
+  box-shadow: 0 25px 70px rgba(10,35,66,.1);
 }
 
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(30px); }
-  to { opacity: 1; transform: translateY(0); }
+.card h2{
+  font-family:'Playfair Display',serif;
+  color:var(--navy);
+  font-size:20px;
+  margin-bottom:20px;
 }
 
-/* =========================
-   FORM
-========================= */
-
+/* FORM */
 .form-group {
-  margin-bottom: 18px;
+  margin-bottom: 16px;
+}
+
+label{
+  display:block;
+  font-size:15px;
+  color:#888;
+  margin-bottom:6px;
 }
 
 input, select {
   width: 100%;
-  padding: 14px;
-  border-radius: 12px;
-  border: none;
+  padding: 13px 14px;
+  border-radius: 10px;
+  border: 1px solid #e0e0e0;
   outline: none;
-  background: rgba(255,255,255,0.08);
-  color: white;
+  background: #FAFAFA;
+  color: var(--navy);
   transition: 0.3s;
 }
 
 input:focus, select:focus {
-  background: rgba(255,255,255,0.12);
-  transform: scale(1.02);
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px rgba(0,85,164,0.1);
 }
 
 /* BUTTON */
@@ -178,151 +137,86 @@ input:focus, select:focus {
   padding: 14px;
   border: none;
   border-radius: 12px;
-  background: linear-gradient(135deg, #d4af37, #b88a2c);
-  color: black;
+  background: linear-gradient(135deg, var(--blue), var(--navy));
+  color: white;
   font-weight: 600;
   cursor: pointer;
   transition: 0.3s;
-  margin-top: 10px;
+  margin-top: 8px;
 }
 
 .btn:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 10px 30px rgba(212,175,55,0.4);
+  transform: translateY(-2px);
+  box-shadow: 0 15px 30px rgba(0,85,164,0.25);
 }
 
-/* =========================
-   STEP SCREENS
-========================= */
-
-.screen {
-  display: none;
-}
-
-.screen.active {
-  display: block;
-}
-
-/* STATUS BOX */
-.status-box {
-  text-align: center;
-  padding: 40px;
-}
-
-.loader {
-  width: 60px;
-  height: 60px;
-  border: 4px solid rgba(255,255,255,0.1);
-  border-top: 4px solid #d4af37;
-  border-radius: 50%;
-  margin: 20px auto;
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
-
-/* PAYMENT CARDS */
-.pricing {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
-  gap: 20px;
-}
-
-.price-card {
-  padding: 20px;
-  border-radius: 16px;
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(255,255,255,0.1);
-  transition: 0.4s;
-  cursor: pointer;
-}
-
-.price-card:hover {
-  transform: translateY(-8px);
-  border-color: #d4af37;
-}
-
-/* SUCCESS */
-.success {
-  text-align: center;
-}
-
-.success h2 {
-  font-family: "Playfair Display";
-  font-size: 34px;
-  color: #d4af37;
-}
-
-/* =========================
-   RESPONSIVE
-========================= */
-
-@media(max-width:768px){
-  .header h1 { font-size: 28px; }
-  .step span { font-size: 10px; }
+@media(max-width:520px){
+  .card { padding: 26px 22px; }
 }
 </style>
 </head>
 
 <body>
 
-<div class="bg-glow"></div>
+<div class="bg-blob"></div>
 
 <div class="container">
 
+  <div class="logo">French <span>Fluency</span></div>
+
   <div class="header">
-    <h1>French Fluency Journal</h1>
-    <p>Premium Member Access Portal</p>
+    <h1>Create Account</h1>
+    <p>Start your journey to French fluency</p>
   </div>
 
   {% if messages %}
-  <div style="margin-bottom:20px;">
+  <div class="messages">
     {% for message in messages %}
-    <p style="color:#ff8080; text-align:center;">{{ message }}</p>
+    <p>{{ message }}</p>
     {% endfor %}
   </div>
   {% endif %}
 
-  <div class="screen active" id="step1">
-    <div class="card">
-      <h2>Create Account</h2>
+  <div class="card">
 
-      <form method="post">
-        {% csrf_token %}
+    <form method="post">
+      {% csrf_token %}
 
-        <div class="form-group">
-          <input type="text" name="full_name" placeholder="Full Name" value="{{ full_name|default:'' }}">
-        </div>
+      <div class="form-group">
+        <label for="full_name">Full Name</label>
+        <input type="text" name="full_name" id="full_name" value="{{ full_name|default:'' }}">
+      </div>
 
-        <div class="form-group">
-          <input type="email" name="email" placeholder="Email Address" value="{{ email|default:'' }}" required>
-        </div>
+      <div class="form-group">
+        <label for="email">Email Address</label>
+        <input type="email" name="email" id="email" value="{{ email|default:'' }}" required>
+      </div>
 
-        <div class="form-group">
-          <input type="text" name="phone" placeholder="Phone Number" value="{{ phone|default:'' }}">
-        </div>
+      <div class="form-group">
+        <label for="phone">Phone Number</label>
+        <input type="text" name="phone" id="phone" value="{{ phone|default:'' }}">
+      </div>
 
-        <div class="form-group">
-          <select name="current_level">
-            <option value="" {% if not current_level %}selected{% endif %}>Learning Level</option>
-            <option value="A1" {% if current_level == 'A1' %}selected{% endif %}>A1 - Beginner</option>
-            <option value="A2" {% if current_level == 'A2' %}selected{% endif %}>A2 - Elementary</option>
-            <option value="B1" {% if current_level == 'B1' %}selected{% endif %}>B1 - Intermediate</option>
-            <option value="B2" {% if current_level == 'B2' %}selected{% endif %}>B2 - Upper Intermediate</option>
-            <option value="C1" {% if current_level == 'C1' %}selected{% endif %}>C1 - Advanced</option>
-            <option value="C2" {% if current_level == 'C2' %}selected{% endif %}>C2 - Mastery</option>
-          </select>
-        </div>
+      <div class="form-group">
+        <label for="current_level">Learning Level</label>
+        <select name="current_level" id="current_level">
+          <option value="" {% if not current_level %}selected{% endif %}>Not sure yet</option>
+          <option value="A1" {% if current_level == 'A1' %}selected{% endif %}>A1 - Beginner</option>
+          <option value="A2" {% if current_level == 'A2' %}selected{% endif %}>A2 - Elementary</option>
+          <option value="B1" {% if current_level == 'B1' %}selected{% endif %}>B1 - Intermediate</option>
+          <option value="B2" {% if current_level == 'B2' %}selected{% endif %}>B2 - Upper Intermediate</option>
+          <option value="C1" {% if current_level == 'C1' %}selected{% endif %}>C1 - Advanced</option>
+          <option value="C2" {% if current_level == 'C2' %}selected{% endif %}>C2 - Mastery</option>
+        </select>
+      </div>
 
-        <div class="form-group">
-          <input type="password" name="password" placeholder="Password" required>
-        </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" name="password" id="password" required>
+      </div>
 
-        <button class="btn" type="submit">Create Account</button>
-      </form>
-    </div>
+      <button class="btn" type="submit">Create Account</button>
+    </form>
   </div>
 
 </div>

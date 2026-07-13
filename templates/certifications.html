@@ -6,87 +6,55 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Certifications - French Fluency Journal</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'css/base.css' %}">
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Inter, sans-serif;}
-body{background:#050b18;color:#fff;}
-
-nav{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:20px 60px;
-  background:rgba(255,255,255,0.03);
-  border-bottom:1px solid rgba(255,255,255,0.08);
+.page-wrap{
+    max-width:900px;
+    margin:0 auto;
+    padding:160px 20px 100px;
 }
 
-.logo{font-family:"Playfair Display";font-size:20px;}
-.logo span{color:#d4af37;}
-
-.nav-links a{
-  color:rgba(255,255,255,0.8);
-  text-decoration:none;
-  margin-left:25px;
-  font-size:14px;
-}
-
-.nav-links a:hover{color:#d4af37;}
-
-.container{
-  max-width:900px;
-  margin:0 auto;
-  padding:50px 20px 80px;
-}
-
-h1{
-  font-family:"Playfair Display";
-  font-size:32px;
-  margin-bottom:10px;
+.page-wrap h1{
+    font-family:'Playfair Display',serif;
+    color:var(--navy);
+    font-size:2.2rem;
+    margin-bottom:10px;
 }
 
 .subtitle{
-  opacity:0.7;
-  margin-bottom:35px;
+    color:#888;
+    margin-bottom:35px;
 }
 
 .exam-row{
-  display:block;
-  background:rgba(255,255,255,0.04);
-  border:1px solid rgba(255,255,255,0.08);
-  border-radius:14px;
-  padding:20px 25px;
-  margin-bottom:18px;
-  text-decoration:none;
-  color:#fff;
-  transition:0.3s;
+    display:block;
+    background:#f8f8f8;
+    border-radius:18px;
+    padding:22px 28px;
+    margin-bottom:18px;
+    text-decoration:none;
+    color:inherit;
+    transition:.3s;
 }
 
 .exam-row:hover{
-  border-color:#d4af37;
-}
-
-.level-tag{
-  display:inline-block;
-  background:#d4af37;
-  color:#000;
-  font-weight:600;
-  font-size:12px;
-  padding:4px 10px;
-  border-radius:20px;
-  margin-bottom:10px;
+    transform:translateY(-4px);
+    box-shadow:0 15px 40px rgba(0,0,0,.08);
 }
 
 .exam-row h3{
-  font-family:"Playfair Display";
-  margin-bottom:8px;
+    font-family:'Playfair Display',serif;
+    color:var(--navy);
+    margin-bottom:8px;
 }
 
 .meta{
-  opacity:0.7;
-  font-size:14px;
+    color:#888;
+    font-size:16px;
 }
 
-.empty{
-  opacity:0.6;
+.empty-state{
+    color:#777;
 }
 </style>
 </head>
@@ -94,29 +62,29 @@ h1{
 <body>
 
 <nav>
-  <div class="logo">French <span>Fluency</span></div>
-  <div class="nav-links">
-    <a href="/">Home</a>
-    <a href="{% url 'courses' %}">Courses</a>
-    <a href="{% url 'exam_list' %}">Certifications</a>
-    <a href="{% url 'login' %}">Login</a>
-  </div>
+    <div class="logo">French <span>Fluency</span></div>
+    <div class="nav-links">
+        <a href="{% url 'home' %}">Home</a>
+        <a href="{% url 'courses' %}">Courses</a>
+        <a href="{% url 'exam_list' %}">Certifications</a>
+        <a href="{% url 'login' %}">Login</a>
+    </div>
 </nav>
 
-<div class="container">
+<div class="page-wrap">
 
-  <h1>Certification Programs</h1>
-  <p class="subtitle">Official-style exams for each CEFR level, from A1 to C2.</p>
+    <h1>Certification Programs</h1>
+    <p class="subtitle">Official-style exams for each CEFR level, from A1 to C2.</p>
 
-  {% for exam in exams %}
-  <a class="exam-row" href="{% url 'exam_detail' exam.level %}">
-    <div class="level-tag">{{ exam.level }}</div>
-    <h3>{{ exam.title }}</h3>
-    <div class="meta">{{ exam.duration_minutes }} min &middot; Passing score {{ exam.passing_score }}% &middot; Fee ${{ exam.fee }}</div>
-  </a>
-  {% empty %}
-  <p class="empty">No certification exams are published yet.</p>
-  {% endfor %}
+    {% for exam in exams %}
+    <a class="exam-row" href="{% url 'exam_detail' exam.level %}">
+        <div class="tag">{{ exam.get_level_display }}</div>
+        <h3>{{ exam.title }}</h3>
+        <div class="meta">{{ exam.duration_minutes }} min &middot; Passing score {{ exam.passing_score }}% &middot; Fee ${{ exam.fee }}</div>
+    </a>
+    {% empty %}
+    <p class="empty-state">No certification exams are published yet.</p>
+    {% endfor %}
 
 </div>
 

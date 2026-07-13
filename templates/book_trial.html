@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+{% load static %}
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Book a Free Trial - French Fluency Journal</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'css/base.css' %}">
+<style>
+.page-header{
+    padding:160px 8% 40px;
+    text-align:center;
+    background:#f8f8f8;
+}
+
+.page-header h1{
+    font-family:'Playfair Display',serif;
+    font-size:2.6rem;
+    color:var(--navy);
+    margin-bottom:15px;
+}
+
+.page-header p{
+    color:#666;
+    font-size:1.05rem;
+    max-width:600px;
+    margin:0 auto;
+}
+
+.page-wrap{
+    max-width:520px;
+    margin:0 auto;
+    padding:50px 20px 100px;
+}
+
+.messages p{
+    padding:14px 22px;
+    border-radius:12px;
+    font-weight:600;
+    background:rgba(212,175,55,.15);
+    color:var(--navy);
+    margin-bottom:15px;
+}
+
+.messages p.success{
+    background:rgba(26,156,111,.15);
+    color:#1a9c6f;
+}
+
+label{
+    display:block;
+    font-size:15px;
+    color:#888;
+    margin-bottom:6px;
+}
+
+select, input, textarea{
+    width:100%;
+    padding:12px 14px;
+    margin-bottom:20px;
+    background:white;
+    border:1px solid #ddd;
+    border-radius:10px;
+    color:#333;
+    font-size:16px;
+    font-family:'Inter',sans-serif;
+}
+
+textarea{
+    min-height:100px;
+    resize:vertical;
+}
+
+button{
+    width:100%;
+    border:none;
+    border-radius:50px;
+    padding:14px;
+    font-size:16px;
+    font-weight:600;
+    cursor:pointer;
+    background:linear-gradient(135deg,var(--blue),var(--navy));
+    color:white;
+}
+
+.fine-print{
+    text-align:center;
+    color:#999;
+    font-size:14px;
+    margin-top:16px;
+}
+
+.section-label{
+    font-size:15px;
+    color:#888;
+    margin:24px 0 10px;
+}
+
+.session-option{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    background:#f8f8f8;
+    border-radius:10px;
+    padding:12px 14px;
+    margin-bottom:10px;
+    font-size:15px;
+    cursor:pointer;
+}
+
+.session-option input{
+    width:auto;
+    margin:0;
+}
+
+.divider{
+    text-align:center;
+    color:#aaa;
+    font-size:14px;
+    margin:20px 0;
+}
+</style>
+</head>
+
+<body>
+
+<nav>
+    <div class="logo">French <span>Fluency</span></div>
+    <div class="nav-links">
+        <a href="{% url 'home' %}">Home</a>
+        <a href="{% url 'articles' %}">Articles</a>
+        <a href="{% url 'courses' %}">Courses</a>
+        <a href="{% url 'login' %}">Login</a>
+    </div>
+</nav>
+
+<div class="page-header">
+    <h1>Book a Free Trial Lesson</h1>
+    <p>No commitment &mdash; meet a teacher and try a real class before you enroll.</p>
+</div>
+
+<div class="page-wrap">
+
+    {% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+        <p class="{% if message.tags == 'success' %}success{% endif %}">{{ message }}</p>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <form method="post">
+        {% csrf_token %}
+
+        <label for="name">Full name</label>
+        <input type="text" name="name" id="name" required>
+
+        <label for="email">Email</label>
+        <input type="email" name="email" id="email" required>
+
+        <label for="phone">Phone (optional)</label>
+        <input type="text" name="phone" id="phone">
+
+        <label for="preferred_level">French level you're interested in (optional)</label>
+        <select name="preferred_level" id="preferred_level">
+            <option value="">Not sure yet</option>
+            {% for value, label in level_choices %}
+            <option value="{{ value }}">{{ label }}</option>
+            {% endfor %}
+        </select>
+
+        <p class="section-label">Pick an open class to join as your trial</p>
+        {% for session in open_sessions %}
+        <label class="session-option">
+            <input type="radio" name="session_id" value="{{ session.id }}">
+            {{ session.course.title }} with {{ session.teacher.get_full_name|default:session.teacher.username }} &middot;
+            {{ session.start_time|date:"D, d M Y H:i" }} &middot; {{ session.seats_left }} seat{{ session.seats_left|pluralize }} left
+        </label>
+        {% empty %}
+        <p class="fine-print" style="margin-bottom:20px;">No open classes right now - request a custom time below instead.</p>
+        {% endfor %}
+
+        <p class="divider">&mdash; or request a custom time &mdash;</p>
+
+        <label for="preferred_date">Preferred date</label>
+        <input type="date" name="preferred_date" id="preferred_date">
+
+        <label for="preferred_time">Preferred time</label>
+        <input type="time" name="preferred_time" id="preferred_time">
+
+        <label for="message">Anything you'd like us to know? (optional)</label>
+        <textarea name="message" id="message"></textarea>
+
+        <button type="submit">Request my free trial</button>
+    </form>
+
+    <p class="fine-print">We'll email you to confirm the exact time with a teacher.</p>
+
+</div>
+
+</body>
+</html>

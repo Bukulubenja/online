@@ -5,9 +5,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>French Fluency Journal - Login</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
+:root{
+  --navy:#0A2342;
+  --gold:#D4AF37;
+  --blue:#0055A4;
+}
+
 *{
   margin:0;
   padding:0;
@@ -16,200 +22,142 @@
 }
 
 body{
-  height:100vh;
-  overflow:hidden;
+  min-height:100vh;
   display:flex;
   align-items:center;
   justify-content:center;
-  background:#050d1a;
-}
-
-/* Cinematic animated background */
-.bg{
-  position:absolute;
-  width:100%;
-  height:100%;
+  background:#FAFAFA;
+  position:relative;
   overflow:hidden;
-  z-index:0;
 }
 
-.bg::before{
-  content:"";
+.bg-blob{
   position:absolute;
-  width:200%;
-  height:200%;
-  background: radial-gradient(circle at 30% 30%, #0A2342, transparent 40%),
-              radial-gradient(circle at 70% 60%, #0055A4, transparent 35%),
-              radial-gradient(circle at 50% 80%, #D4AF37, transparent 30%);
-  animation: moveBg 12s infinite alternate ease-in-out;
-  filter: blur(40px);
-  opacity:0.7;
-}
-
-@keyframes moveBg{
-  from{transform:translate(-10%, -10%) scale(1);}
-  to{transform:translate(10%, 10%) scale(1.1);}
-}
-
-/* Floating particles */
-.particles span{
-  position:absolute;
-  width:6px;
-  height:6px;
-  background:rgba(255,255,255,0.5);
+  width:600px;
+  height:600px;
   border-radius:50%;
-  animation: float 6s infinite ease-in-out;
+  background:radial-gradient(circle, rgba(0,85,164,.08), transparent 70%);
+  top:-200px;
+  right:-150px;
 }
 
-.particles span:nth-child(odd){
-  background:#D4AF37;
+.bg-blob.two{
+  background:radial-gradient(circle, rgba(212,175,55,.10), transparent 70%);
+  top:auto;
+  bottom:-220px;
+  left:-180px;
+  right:auto;
 }
 
-@keyframes float{
-  0%{transform:translateY(0) translateX(0); opacity:0;}
-  50%{opacity:1;}
-  100%{transform:translateY(-120px) translateX(40px); opacity:0;}
-}
-
-/* Login Card */
 .container{
   position:relative;
   z-index:2;
   width:420px;
   max-width:90%;
-  padding:35px;
-  border-radius:20px;
-  background:rgba(255,255,255,0.06);
-  backdrop-filter:blur(25px);
-  box-shadow:
-    0 20px 60px rgba(0,0,0,0.6),
-    inset 0 1px 0 rgba(255,255,255,0.08);
-  animation: fadeUp 1s ease;
+  padding:45px 40px;
+  border-radius:24px;
+  background:white;
+  box-shadow:0 25px 70px rgba(10,35,66,.12);
 }
 
-@keyframes fadeUp{
-  from{opacity:0; transform:translateY(40px);}
-  to{opacity:1; transform:translateY(0);}
-}
-
-h1{
-  color:white;
-  font-size:26px;
-  margin-bottom:5px;
-}
-
-p{
-  color:rgba(255,255,255,0.6);
-  font-size:14px;
+.logo{
+  font-family:'Playfair Display',serif;
+  font-size:22px;
+  font-weight:700;
+  color:var(--navy);
   margin-bottom:25px;
 }
 
-/* Input fields */
+.logo span{
+  color:var(--gold);
+}
+
+h1{
+  color:var(--navy);
+  font-size:26px;
+  font-family:'Playfair Display',serif;
+  margin-bottom:5px;
+}
+
+p.subtitle{
+  color:#777;
+  font-size:16px;
+  margin-bottom:25px;
+}
+
+.messages p{
+  color:#a8281d;
+  font-size:15px;
+  margin-bottom:8px;
+  font-weight:600;
+}
+
 .input-group{
   margin-bottom:18px;
-  position:relative;
+}
+
+label{
+  display:block;
+  font-size:15px;
+  color:#888;
+  margin-bottom:6px;
 }
 
 input{
   width:100%;
-  padding:14px 12px;
+  padding:14px 14px;
   border-radius:12px;
-  border:1px solid rgba(255,255,255,0.1);
-  background:rgba(255,255,255,0.05);
-  color:white;
+  border:1px solid #e0e0e0;
+  background:#FAFAFA;
+  color:var(--navy);
   outline:none;
   transition:0.3s;
 }
 
 input:focus{
-  border-color:#D4AF37;
-  box-shadow:0 0 15px rgba(212,175,55,0.2);
-  transform:scale(1.02);
+  border-color:var(--blue);
+  box-shadow:0 0 0 3px rgba(0,85,164,0.1);
 }
 
-/* Floating label */
-label{
-  position:absolute;
-  top:12px;
-  left:12px;
-  color:rgba(255,255,255,0.4);
-  font-size:13px;
-  pointer-events:none;
-  transition:0.3s;
-}
-
-input:focus + label,
-input:not(:placeholder-shown) + label{
-  top:-10px;
-  font-size:11px;
-  color:#D4AF37;
-  background:#050d1a;
-  padding:0 5px;
-}
-
-/* Button */
 button{
   width:100%;
   padding:14px;
   border:none;
   border-radius:12px;
-  background:linear-gradient(135deg,#D4AF37,#b38b2a);
-  color:#000;
+  background:linear-gradient(135deg,var(--blue),var(--navy));
+  color:white;
   font-weight:600;
   cursor:pointer;
   transition:0.3s;
   margin-top:10px;
-  box-shadow:0 10px 30px rgba(212,175,55,0.2);
-  position:relative;
-  overflow:hidden;
 }
 
 button:hover{
   transform:translateY(-2px);
-  box-shadow:0 15px 40px rgba(212,175,55,0.3);
+  box-shadow:0 15px 30px rgba(0,85,164,0.25);
 }
 
-/* ripple effect */
-button::after{
-  content:"";
-  position:absolute;
-  width:0;
-  height:0;
-  top:50%;
-  left:50%;
-  background:rgba(255,255,255,0.3);
-  border-radius:50%;
-  transform:translate(-50%,-50%);
-  transition:width 0.6s,height 0.6s;
-}
-
-button:active::after{
-  width:300px;
-  height:300px;
-}
-
-/* footer links */
 .footer{
-  margin-top:18px;
+  margin-top:20px;
   display:flex;
   justify-content:space-between;
-  font-size:12px;
-  color:rgba(255,255,255,0.5);
+  font-size:14px;
+  color:#999;
 }
 
 .footer a{
-  color:#D4AF37;
+  color:var(--blue);
   text-decoration:none;
+  font-weight:600;
 }
 
 .footer a:hover{
   text-decoration:underline;
 }
 
-/* Responsive */
 @media(max-width:500px){
   .container{
-    padding:25px;
+    padding:30px 25px;
   }
 }
 </style>
@@ -217,25 +165,20 @@ button:active::after{
 
 <body>
 
-<div class="bg"></div>
-
-<div class="particles">
-  <span style="left:10%;top:80%;animation-delay:0s"></span>
-  <span style="left:20%;top:90%;animation-delay:1s"></span>
-  <span style="left:30%;top:85%;animation-delay:2s"></span>
-  <span style="left:60%;top:95%;animation-delay:3s"></span>
-  <span style="left:80%;top:88%;animation-delay:4s"></span>
-</div>
+<div class="bg-blob"></div>
+<div class="bg-blob two"></div>
 
 <div class="container">
 
+  <div class="logo">French <span>Fluency</span></div>
+
   <h1>Welcome Back</h1>
-  <p>Continue your journey to French fluency</p>
+  <p class="subtitle">Continue your journey to French fluency</p>
 
   {% if messages %}
-  <div style="margin-bottom:15px;">
+  <div class="messages">
     {% for message in messages %}
-    <p style="color:#ff8080; font-size:13px;">{{ message }}</p>
+    <p>{{ message }}</p>
     {% endfor %}
   </div>
   {% endif %}
@@ -244,13 +187,13 @@ button:active::after{
     {% csrf_token %}
 
     <div class="input-group">
-      <input type="text" name="username" placeholder=" " required>
-      <label>Username or Email</label>
+      <label for="username">Username or Email</label>
+      <input type="text" name="username" id="username" required>
     </div>
 
     <div class="input-group">
-      <input type="password" name="password" placeholder=" " required>
-      <label>Password</label>
+      <label for="password">Password</label>
+      <input type="password" name="password" id="password" required>
     </div>
 
     <button type="submit">Sign In</button>

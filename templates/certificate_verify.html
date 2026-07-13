@@ -6,74 +6,53 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Verify Certificate {{ certificate.certificate_id }} - French Fluency Journal</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'css/base.css' %}">
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Inter, sans-serif;}
-body{background:#050b18;color:#fff;}
-
-nav{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:20px 60px;
-  background:rgba(255,255,255,0.03);
-  border-bottom:1px solid rgba(255,255,255,0.08);
-}
-
-.logo{font-family:"Playfair Display";font-size:20px;}
-.logo span{color:#d4af37;}
-
-.nav-links a{
-  color:rgba(255,255,255,0.8);
-  text-decoration:none;
-  margin-left:25px;
-  font-size:14px;
-}
-
-.container{
-  max-width:600px;
-  margin:0 auto;
-  padding:60px 20px 80px;
-  text-align:center;
+.page-wrap{
+    max-width:600px;
+    margin:0 auto;
+    padding:160px 20px 100px;
+    text-align:center;
 }
 
 .seal{
-  font-size:48px;
-  margin-bottom:20px;
+    font-size:48px;
+    margin-bottom:20px;
 }
 
-h1{
-  font-family:"Playfair Display";
-  font-size:28px;
-  margin-bottom:8px;
+.page-wrap h1{
+    font-family:'Playfair Display',serif;
+    font-size:1.8rem;
+    margin-bottom:8px;
 }
 
-.valid{color:#00c896;}
-.invalid{color:#ff8080;}
+.valid{color:#1a9c6f;}
+.invalid{color:#a8281d;}
 
 .card{
-  background:rgba(255,255,255,0.04);
-  border:1px solid rgba(255,255,255,0.08);
-  border-radius:14px;
-  padding:30px;
-  margin-top:30px;
-  text-align:left;
+    background:#f8f8f8;
+    border-radius:18px;
+    padding:30px;
+    margin-top:30px;
+    text-align:left;
 }
 
 .row{
-  display:flex;
-  justify-content:space-between;
-  padding:10px 0;
-  border-top:1px solid rgba(255,255,255,0.06);
-  font-size:14px;
+    display:flex;
+    justify-content:space-between;
+    padding:12px 0;
+    border-top:1px solid #e6e6e6;
+    font-size:16px;
+    color:#444;
 }
 
 .row:first-of-type{
-  border-top:none;
+    border-top:none;
 }
 
 .cert-id{
-  font-family:monospace;
-  letter-spacing:1px;
+    font-family:monospace;
+    letter-spacing:1px;
 }
 </style>
 </head>
@@ -81,32 +60,32 @@ h1{
 <body>
 
 <nav>
-  <div class="logo">French <span>Fluency</span></div>
-  <div class="nav-links">
-    <a href="/">Home</a>
-    <a href="{% url 'exam_list' %}">Certifications</a>
-  </div>
+    <div class="logo">French <span>Fluency</span></div>
+    <div class="nav-links">
+        <a href="{% url 'home' %}">Home</a>
+        <a href="{% url 'exam_list' %}">Certifications</a>
+    </div>
 </nav>
 
-<div class="container">
+<div class="page-wrap">
 
-  <div class="seal">🏅</div>
+    <div class="seal">&#127942;</div>
 
-  {% if certificate.is_valid %}
-  <h1 class="valid">Certificate Verified</h1>
-  <p style="opacity:0.7;">This certificate is authentic and currently valid.</p>
-  {% else %}
-  <h1 class="invalid">Certificate Revoked</h1>
-  <p style="opacity:0.7;">This certificate has been revoked and is no longer valid.</p>
-  {% endif %}
+    {% if certificate.is_valid %}
+    <h1 class="valid">Certificate Verified</h1>
+    <p style="color:#888;">This certificate is authentic and currently valid.</p>
+    {% else %}
+    <h1 class="invalid">Certificate Revoked</h1>
+    <p style="color:#888;">This certificate has been revoked and is no longer valid.</p>
+    {% endif %}
 
-  <div class="card">
-    <div class="row"><span>Certificate ID</span><span class="cert-id">{{ certificate.certificate_id }}</span></div>
-    <div class="row"><span>Awarded to</span><span>{{ certificate.student.get_full_name|default:certificate.student.username }}</span></div>
-    <div class="row"><span>Level</span><span>{{ certificate.exam.level }}</span></div>
-    <div class="row"><span>Exam</span><span>{{ certificate.exam.title }}</span></div>
-    <div class="row"><span>Issued</span><span>{{ certificate.issued_at|date:"Y-m-d" }}</span></div>
-  </div>
+    <div class="card">
+        <div class="row"><span>Certificate ID</span><span class="cert-id">{{ certificate.certificate_id }}</span></div>
+        <div class="row"><span>Awarded to</span><span>{{ certificate.student.get_full_name|default:certificate.student.username }}</span></div>
+        <div class="row"><span>Level</span><span>{{ certificate.exam.get_level_display }}</span></div>
+        <div class="row"><span>Exam</span><span>{{ certificate.exam.title }}</span></div>
+        <div class="row"><span>Issued</span><span>{{ certificate.issued_at|date:"Y-m-d" }}</span></div>
+    </div>
 
 </div>
 
