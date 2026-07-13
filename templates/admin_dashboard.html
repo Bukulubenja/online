@@ -1,29 +1,126 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-{% load static %}
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin Dashboard - French Fluency Journal</title>
+<title>Admin Console - French Fluency Journal</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="{% static 'css/base.css' %}">
 <style>
-.page-wrap{
-    max-width:1100px;
-    margin:0 auto;
-    padding:160px 20px 100px;
+:root{
+    --navy:#0A2342;
+    --gold:#D4AF37;
+    --blue:#0055A4;
 }
 
-.page-wrap h1{
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Inter, sans-serif;
+}
+
+body{
+    background:#FAFAFA;
+    color:var(--navy);
+    overflow-x:hidden;
+}
+
+.admin-shell{
+    display:grid;
+    grid-template-columns:260px 1fr;
+    min-height:100vh;
+}
+
+.admin-sidebar{
+    background:var(--navy);
+    color:rgba(255,255,255,.85);
+    padding:25px;
+    position:sticky;
+    top:0;
+    height:100vh;
+}
+
+.admin-sidebar .logo{
+    font-family:'Playfair Display',serif;
+    font-size:20px;
+    font-weight:700;
+    color:#fff;
+}
+
+.admin-sidebar .logo span{
+    color:var(--gold);
+}
+
+.admin-badge{
+    display:inline-block;
+    margin-top:8px;
+    margin-bottom:30px;
+    padding:4px 10px;
+    border:1px solid var(--gold);
+    border-radius:20px;
+    color:var(--gold);
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:1px;
+    text-transform:uppercase;
+}
+
+.admin-nav-item{
+    display:block;
+    padding:12px 15px;
+    margin:6px 0;
+    border-radius:10px;
+    color:rgba(255,255,255,.7);
+    font-weight:500;
+    text-decoration:none;
+    transition:.3s;
+}
+
+.admin-nav-item:hover{
+    background:rgba(255,255,255,.08);
+    color:#fff;
+    transform:translateX(5px);
+}
+
+.admin-nav-item.active{
+    background:rgba(212,175,55,.15);
+    color:var(--gold);
+}
+
+.admin-main{
+    padding:35px;
+}
+
+.admin-topbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:30px;
+}
+
+.admin-topbar h1{
     font-family:'Playfair Display',serif;
     color:var(--navy);
-    font-size:2.2rem;
-    margin-bottom:10px;
+    font-size:1.8rem;
 }
 
-.subtitle{
+.admin-topbar p{
     color:#888;
-    margin-bottom:35px;
+    margin-top:4px;
+}
+
+.messages p{
+    padding:14px 22px;
+    border-radius:12px;
+    font-weight:600;
+    background:rgba(212,175,55,.15);
+    color:var(--navy);
+    margin-bottom:15px;
+}
+
+.messages p.success{
+    background:rgba(26,156,111,.15);
+    color:#1a9c6f;
 }
 
 .stats{
@@ -102,90 +199,114 @@ th{
     font-size:16px;
     padding:15px 0;
 }
+
+@media(max-width:900px){
+    .admin-shell{ grid-template-columns:1fr; }
+    .admin-sidebar{ display:none; }
+}
 </style>
 </head>
 
 <body>
 
-<nav>
-    <div class="logo">French <span>Fluency</span></div>
-    <div class="nav-links">
-        <a href="{% url 'dashboard' %}">Dashboard</a>
-        <a href="/admin/">Django Admin</a>
-    </div>
-</nav>
+<div class="admin-shell">
 
-<div class="page-wrap">
+    <div class="admin-sidebar">
+        <div class="logo">French <span>Fluency</span></div>
+        <div class="admin-badge">Admin Console</div>
 
-    <h1>Admin Dashboard</h1>
-    <p class="subtitle">Platform overview for {{ request.user.first_name|default:request.user.username }}</p>
-
-    <div class="stats">
-        <div class="stat">
-            <div class="value">{{ total_students }}</div>
-            <div class="label">Total Students</div>
-            <div class="sub">{{ new_students }} new in the last 30 days</div>
-        </div>
-        <div class="stat">
-            <div class="value">{{ published_courses }}</div>
-            <div class="label">Active Courses</div>
-            <div class="sub">{{ total_courses }} total</div>
-        </div>
-        <div class="stat">
-            <div class="value">${{ monthly_revenue }}</div>
-            <div class="label">Monthly Revenue</div>
-            <div class="sub">${{ total_revenue }} all-time</div>
-        </div>
-        <div class="stat">
-            <div class="value">{{ certificates_issued }}</div>
-            <div class="label">Certificates Issued</div>
-            <div class="sub">{{ pass_rate }}% pass rate ({{ submitted_count }} exams taken)</div>
-        </div>
-        <div class="stat">
-            <div class="value">{{ total_enrollments }}</div>
-            <div class="label">Total Enrollments</div>
-            <div class="sub">{{ completion_rate }}% completed</div>
-        </div>
-        <div class="stat">
-            <div class="value">{{ payment_counts.success }}</div>
-            <div class="label">Successful Payments</div>
-            <div class="sub">{{ payment_counts.pending }} pending &middot; {{ payment_counts.failed }} failed</div>
-        </div>
+        <a href="{% url 'admin_dashboard' %}" class="admin-nav-item active">Overview</a>
+        <a href="{% url 'admin_students' %}" class="admin-nav-item">Students</a>
+        <a href="{% url 'admin_instructors' %}" class="admin-nav-item">Instructors</a>
+        <a href="{% url 'dashboard' %}" class="admin-nav-item">My Dashboard</a>
+        <a href="{% url 'logout' %}" class="admin-nav-item">Logout</a>
     </div>
 
-    <section>
-        <h2>Recent Payments</h2>
-        <table>
-            <tr><th>Student</th><th>Course</th><th>Amount</th><th>Method</th><th>Date</th></tr>
-            {% for payment in recent_payments %}
-            <tr>
-                <td>{{ payment.student.username }}</td>
-                <td>{{ payment.course.title }}</td>
-                <td>${{ payment.amount }}</td>
-                <td>{{ payment.get_method_display }}</td>
-                <td>{{ payment.created_at|date:"Y-m-d" }}</td>
-            </tr>
-            {% empty %}
-            <tr><td colspan="5" class="empty-state">No successful payments yet.</td></tr>
-            {% endfor %}
-        </table>
-    </section>
+    <div class="admin-main">
 
-    <section>
-        <h2>Instructor Activity</h2>
-        <table>
-            <tr><th>Teacher</th><th>Courses</th><th>Students Enrolled</th></tr>
-            {% for row in instructors %}
-            <tr>
-                <td>{{ row.teacher.get_full_name|default:row.teacher.username }}</td>
-                <td>{{ row.course_count }}</td>
-                <td>{{ row.student_count }}</td>
-            </tr>
-            {% empty %}
-            <tr><td colspan="3" class="empty-state">No teachers yet.</td></tr>
+        <div class="admin-topbar">
+            <div>
+                <h1>Platform Overview</h1>
+                <p>Welcome, {{ request.user.first_name|default:request.user.username }}</p>
+            </div>
+        </div>
+
+        {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+            <p class="{% if message.tags == 'success' %}success{% endif %}">{{ message }}</p>
             {% endfor %}
-        </table>
-    </section>
+        </div>
+        {% endif %}
+
+        <div class="stats">
+            <div class="stat">
+                <div class="value">{{ total_students }}</div>
+                <div class="label">Total Students</div>
+                <div class="sub">{{ new_students }} new in the last 30 days</div>
+            </div>
+            <div class="stat">
+                <div class="value">{{ published_courses }}</div>
+                <div class="label">Active Courses</div>
+                <div class="sub">{{ total_courses }} total</div>
+            </div>
+            <div class="stat">
+                <div class="value">${{ monthly_revenue }}</div>
+                <div class="label">Monthly Revenue</div>
+                <div class="sub">${{ total_revenue }} all-time</div>
+            </div>
+            <div class="stat">
+                <div class="value">{{ certificates_issued }}</div>
+                <div class="label">Certificates Issued</div>
+                <div class="sub">{{ pass_rate }}% pass rate ({{ submitted_count }} exams taken)</div>
+            </div>
+            <div class="stat">
+                <div class="value">{{ total_enrollments }}</div>
+                <div class="label">Total Enrollments</div>
+                <div class="sub">{{ completion_rate }}% completed</div>
+            </div>
+            <div class="stat">
+                <div class="value">{{ payment_counts.success }}</div>
+                <div class="label">Successful Payments</div>
+                <div class="sub">{{ payment_counts.pending }} pending &middot; {{ payment_counts.failed }} failed</div>
+            </div>
+        </div>
+
+        <section>
+            <h2>Recent Payments</h2>
+            <table>
+                <tr><th>Student</th><th>Course</th><th>Amount</th><th>Method</th><th>Date</th></tr>
+                {% for payment in recent_payments %}
+                <tr>
+                    <td>{{ payment.student.username }}</td>
+                    <td>{{ payment.course.title }}</td>
+                    <td>${{ payment.amount }}</td>
+                    <td>{{ payment.get_method_display }}</td>
+                    <td>{{ payment.created_at|date:"Y-m-d" }}</td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="5" class="empty-state">No successful payments yet.</td></tr>
+                {% endfor %}
+            </table>
+        </section>
+
+        <section>
+            <h2>Instructor Activity</h2>
+            <table>
+                <tr><th>Teacher</th><th>Courses</th><th>Students Enrolled</th></tr>
+                {% for row in instructors %}
+                <tr>
+                    <td>{{ row.teacher.get_full_name|default:row.teacher.username }}</td>
+                    <td>{{ row.course_count }}</td>
+                    <td>{{ row.student_count }}</td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="3" class="empty-state">No teachers yet.</td></tr>
+                {% endfor %}
+            </table>
+        </section>
+
+    </div>
 
 </div>
 

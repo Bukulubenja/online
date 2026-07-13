@@ -12,12 +12,14 @@ from assignments import api as assignments_api
 from schedules import api as schedules_api
 from payments import api as payments_api
 from certifications import api as certifications_api
+from dashboard import api as dashboard_api
 
 router = DefaultRouter()
 router.register('courses', CourseViewSet, basename='course-api')
 
 api_urlpatterns = [
     path('auth/register/', user_api.api_register, name='api_register'),
+    path('auth/apply-teacher/', user_api.api_apply_teacher, name='api_apply_teacher'),
     path('auth/login/', user_api.api_login, name='api_login'),
     path('auth/logout/', user_api.api_logout, name='api_logout'),
     path('auth/me/', user_api.api_dashboard, name='api_dashboard'),
@@ -51,6 +53,11 @@ api_urlpatterns = [
     path('exam-attempts/<int:attempt_id>/result/', certifications_api.api_exam_result, name='api_exam_result'),
     path('certificates/mine/', certifications_api.api_my_certificates, name='api_my_certificates'),
     path('certificates/<str:certificate_id>/', certifications_api.api_certificate_verify, name='api_certificate_verify'),
+
+    path('admin/students/', dashboard_api.api_admin_students, name='api_admin_students'),
+    path('admin/instructors/', dashboard_api.api_admin_instructors, name='api_admin_instructors'),
+    path('admin/instructors/<int:user_id>/approve/', dashboard_api.api_admin_instructor_approve, name='api_admin_instructor_approve'),
+    path('admin/instructors/<int:user_id>/reject/', dashboard_api.api_admin_instructor_reject, name='api_admin_instructor_reject'),
 
     path('', include(router.urls)),
 ]

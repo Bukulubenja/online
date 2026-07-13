@@ -1,16 +1,19 @@
 from datetime import timedelta
 from functools import wraps
 
+from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.core.exceptions import PermissionDenied
-from django.db.models import Sum
-from django.shortcuts import render
+from django.db.models import Q, Sum
+from django.shortcuts import get_object_or_404, redirect, render
+
 from django.utils import timezone
 
 from certifications.models import Certificate, ExamAttempt
 from courses.models import Course
 from enrollments.models import Enrollment
 from payments.models import Payment
+from user.services import AccountCreationError, create_student_account
 
 User = get_user_model()
 
@@ -89,3 +92,68 @@ def admin_dashboard(request):
         'instructors': instructors,
     }
     return render(request, 'admin_dashboard.html', context)
+
+
+@main_admin_required
+def admin_students(request):
+    query = request.GET.get('q', '').strip()
+    students = User.objects.filter(role='student').order_by('-date_joined')
+    if query:
+        students = students.filter(
+            Q(username__icontains=query) | Q(email__icontains=query)
+            | Q(first_name__icontains=query) | Q(last_name__icontains=query)
+        )
+    return render(request, 'admin_students.html', {'students': students, 'query': query})
+
+
+@main_admin_required
+def admin_student_create(request):
+    form_data = {}
+    if request.method == 'POST':
+        full_name = request.POST.get('full_name', '').strip()
+        email = request.POST.get('email', '').strip()
+        phone = request.POST.get('phone', '').strip()
+        current_level = request.POST.get('current_level', '').strip()
+        password = request.POST.get('password', '')
+        form_data = {
+            'full_name': full_name, 'email': email, 'phone': phone, 'current_level': current_level,
+        }
+
+        try:
+            create_student_account(
+                email, password, full_name=full_name, phone=phone, current_level=current_level,
+            )
+        except AccountCreationError as e:
+            for error in e.messages:
+                messages.error(request, error)
+            return render(request, 'admin_student_form.html', form_data)
+
+        messages.success(request, f'Student account created for {email}.')
+        return redirect('admin_students')
+
+    return render(request, 'admin_student_form.html', form_data)
+
+
+@main_admin_required
+def admin_instructors(request):
+    pending = User.objects.filter(role='teacher', is_active=False).order_by('-date_joined')
+    approved = User.objects.filter(role='teacher', is_active=True).order_by('-date_joined')
+    return render(request, 'admin_instructors.html', {'pending': pending, 'approved': approved})
+
+
+@main_admin_required
+def admin_instructor_approve(request, user_id):
+    teacher = get_object_or_404(User, id=user_id, role='teacher', is_active=False)
+    teacher.is_active = True
+    teacher.save(update_fields=['is_active'])
+    messages.success(request, f'{teacher.email} approved as an instructor.')
+    return redirect('admin_instructors')
+
+
+@main_admin_required
+def admin_instructor_reject(request, user_id):
+    teacher = get_object_or_404(User, id=user_id, role='teacher', is_active=False)
+    email = teacher.email
+    teacher.delete()
+    messages.success(request, f'Application from {email} rejected.')
+    return redirect('admin_instructors')

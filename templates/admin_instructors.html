@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Instructors - Admin Console</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+    --navy:#0A2342;
+    --gold:#D4AF37;
+    --blue:#0055A4;
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Inter, sans-serif;
+}
+
+body{
+    background:#FAFAFA;
+    color:var(--navy);
+    overflow-x:hidden;
+}
+
+.admin-shell{
+    display:grid;
+    grid-template-columns:260px 1fr;
+    min-height:100vh;
+}
+
+.admin-sidebar{
+    background:var(--navy);
+    color:rgba(255,255,255,.85);
+    padding:25px;
+    position:sticky;
+    top:0;
+    height:100vh;
+}
+
+.admin-sidebar .logo{
+    font-family:'Playfair Display',serif;
+    font-size:20px;
+    font-weight:700;
+    color:#fff;
+}
+
+.admin-sidebar .logo span{
+    color:var(--gold);
+}
+
+.admin-badge{
+    display:inline-block;
+    margin-top:8px;
+    margin-bottom:30px;
+    padding:4px 10px;
+    border:1px solid var(--gold);
+    border-radius:20px;
+    color:var(--gold);
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:1px;
+    text-transform:uppercase;
+}
+
+.admin-nav-item{
+    display:block;
+    padding:12px 15px;
+    margin:6px 0;
+    border-radius:10px;
+    color:rgba(255,255,255,.7);
+    font-weight:500;
+    text-decoration:none;
+    transition:.3s;
+}
+
+.admin-nav-item:hover{
+    background:rgba(255,255,255,.08);
+    color:#fff;
+    transform:translateX(5px);
+}
+
+.admin-nav-item.active{
+    background:rgba(212,175,55,.15);
+    color:var(--gold);
+}
+
+.admin-main{
+    padding:35px;
+}
+
+.admin-topbar{
+    margin-bottom:30px;
+}
+
+.admin-topbar h1{
+    font-family:'Playfair Display',serif;
+    color:var(--navy);
+    font-size:1.8rem;
+}
+
+.admin-topbar p{
+    color:#888;
+    margin-top:4px;
+}
+
+.messages p{
+    padding:14px 22px;
+    border-radius:12px;
+    font-weight:600;
+    background:rgba(212,175,55,.15);
+    color:var(--navy);
+    margin-bottom:15px;
+}
+
+.messages p.success{
+    background:rgba(26,156,111,.15);
+    color:#1a9c6f;
+}
+
+section{
+    margin-bottom:40px;
+}
+
+h2{
+    font-family:'Playfair Display',serif;
+    color:var(--navy);
+    font-size:1.3rem;
+    margin-bottom:15px;
+}
+
+.row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    background:#f8f8f8;
+    border-radius:16px;
+    padding:18px 22px;
+    margin-bottom:12px;
+    gap:16px;
+    flex-wrap:wrap;
+}
+
+.row .info strong{
+    display:block;
+    font-size:16px;
+    color:var(--navy);
+}
+
+.row .info span{
+    color:#888;
+    font-size:14px;
+}
+
+.row .actions{
+    display:flex;
+    gap:10px;
+}
+
+.btn{
+    padding:10px 18px;
+    border-radius:10px;
+    border:none;
+    font-weight:600;
+    cursor:pointer;
+    text-decoration:none;
+    transition:.3s;
+}
+
+.btn-approve{
+    background:rgba(26,156,111,.15);
+    color:#1a9c6f;
+}
+
+.btn-approve:hover{
+    background:#1a9c6f;
+    color:white;
+}
+
+.btn-reject{
+    background:rgba(168,40,29,.1);
+    color:#a8281d;
+}
+
+.btn-reject:hover{
+    background:#a8281d;
+    color:white;
+}
+
+.tag{
+    display:inline-block;
+    padding:4px 10px;
+    border-radius:20px;
+    font-size:12px;
+    font-weight:700;
+    background:rgba(0,85,164,.1);
+    color:var(--blue);
+}
+
+.empty-state{
+    color:#999;
+    font-size:16px;
+    padding:15px 0;
+}
+
+@media(max-width:900px){
+    .admin-shell{ grid-template-columns:1fr; }
+    .admin-sidebar{ display:none; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="admin-shell">
+
+    <div class="admin-sidebar">
+        <div class="logo">French <span>Fluency</span></div>
+        <div class="admin-badge">Admin Console</div>
+
+        <a href="{% url 'admin_dashboard' %}" class="admin-nav-item">Overview</a>
+        <a href="{% url 'admin_students' %}" class="admin-nav-item">Students</a>
+        <a href="{% url 'admin_instructors' %}" class="admin-nav-item active">Instructors</a>
+        <a href="{% url 'dashboard' %}" class="admin-nav-item">My Dashboard</a>
+        <a href="{% url 'logout' %}" class="admin-nav-item">Logout</a>
+    </div>
+
+    <div class="admin-main">
+
+        <div class="admin-topbar">
+            <h1>Instructors</h1>
+            <p>Review pending applications and manage approved instructors.</p>
+        </div>
+
+        {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+            <p class="{% if message.tags == 'success' %}success{% endif %}">{{ message }}</p>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <section>
+            <h2>Pending Approval ({{ pending|length }})</h2>
+            {% for teacher in pending %}
+            <div class="row">
+                <div class="info">
+                    <strong>{{ teacher.get_full_name|default:teacher.username }}</strong>
+                    <span>{{ teacher.email }} &middot; {{ teacher.phone|default:"no phone" }} &middot; applied {{ teacher.date_joined|date:"Y-m-d" }}</span>
+                </div>
+                <div class="actions">
+                    <form method="post" action="{% url 'admin_instructor_approve' teacher.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-approve">Approve</button>
+                    </form>
+                    <form method="post" action="{% url 'admin_instructor_reject' teacher.id %}" onsubmit="return confirm('Reject and delete this application?');">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-reject">Reject</button>
+                    </form>
+                </div>
+            </div>
+            {% empty %}
+            <p class="empty-state">No pending applications.</p>
+            {% endfor %}
+        </section>
+
+        <section>
+            <h2>Approved Instructors ({{ approved|length }})</h2>
+            {% for teacher in approved %}
+            <div class="row">
+                <div class="info">
+                    <strong>{{ teacher.get_full_name|default:teacher.username }}</strong>
+                    <span>{{ teacher.email }} &middot; {{ teacher.phone|default:"no phone" }}</span>
+                </div>
+                <span class="tag">Active</span>
+            </div>
+            {% empty %}
+            <p class="empty-state">No approved instructors yet.</p>
+            {% endfor %}
+        </section>
+
+    </div>
+
+</div>
+
+</body>
+</html>

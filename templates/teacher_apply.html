@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>French Fluency Journal - Access Portal</title>
+<title>French Fluency Journal - Apply to Teach</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
 
@@ -63,7 +63,6 @@ body {
   color:var(--gold);
 }
 
-/* HEADER */
 .header {
   text-align: center;
   margin-bottom: 30px;
@@ -88,7 +87,6 @@ body {
   margin-bottom:15px;
 }
 
-/* CARD */
 .card {
   background: white;
   border-radius: 24px;
@@ -103,7 +101,6 @@ body {
   margin-bottom:20px;
 }
 
-/* FORM */
 .form-group {
   margin-bottom: 16px;
 }
@@ -115,7 +112,7 @@ label{
   margin-bottom:6px;
 }
 
-input, select {
+input {
   width: 100%;
   padding: 13px 14px;
   border-radius: 10px;
@@ -126,12 +123,11 @@ input, select {
   transition: 0.3s;
 }
 
-input:focus, select:focus {
+input:focus {
   border-color: var(--blue);
   box-shadow: 0 0 0 3px rgba(0,85,164,0.1);
 }
 
-/* BUTTON */
 .btn {
   width: 100%;
   padding: 14px;
@@ -150,6 +146,12 @@ input:focus, select:focus {
   box-shadow: 0 15px 30px rgba(0,85,164,0.25);
 }
 
+.success-note {
+  color:#666;
+  text-align:center;
+  line-height:1.6;
+}
+
 @media(max-width:520px){
   .card { padding: 26px 22px; }
 }
@@ -165,8 +167,8 @@ input:focus, select:focus {
   <div class="logo">French <span>Fluency</span></div>
 
   <div class="header">
-    <h1>Create Account</h1>
-    <p>Start your journey to French fluency</p>
+    <h1>Apply to Teach</h1>
+    <p>Join our instructor team and help students master French</p>
   </div>
 
   {% if messages %}
@@ -178,7 +180,14 @@ input:focus, select:focus {
   {% endif %}
 
   <div class="card">
-
+    {% if submitted %}
+    <p class="success-note">
+      Thanks for applying! Your application has been submitted and is pending review by our
+      Main Admin team. We'll let you know once your instructor account is approved &mdash;
+      you won't be able to log in until then.
+    </p>
+    <a href="{% url 'login' %}" style="display:block;text-align:center;margin-top:20px;color:var(--blue);font-weight:600;text-decoration:none;">Back to login</a>
+    {% else %}
     <form method="post">
       {% csrf_token %}
 
@@ -198,29 +207,17 @@ input:focus, select:focus {
       </div>
 
       <div class="form-group">
-        <label for="current_level">Learning Level</label>
-        <select name="current_level" id="current_level">
-          <option value="" {% if not current_level %}selected{% endif %}>Not sure yet</option>
-          <option value="A1" {% if current_level == 'A1' %}selected{% endif %}>A1 - Beginner</option>
-          <option value="A2" {% if current_level == 'A2' %}selected{% endif %}>A2 - Elementary</option>
-          <option value="B1" {% if current_level == 'B1' %}selected{% endif %}>B1 - Intermediate</option>
-          <option value="B2" {% if current_level == 'B2' %}selected{% endif %}>B2 - Upper Intermediate</option>
-          <option value="C1" {% if current_level == 'C1' %}selected{% endif %}>C1 - Advanced</option>
-          <option value="C2" {% if current_level == 'C2' %}selected{% endif %}>C2 - Mastery</option>
-        </select>
-      </div>
-
-      <div class="form-group">
         <label for="password">Password</label>
         <input type="password" name="password" id="password" required>
       </div>
 
-      <button class="btn" type="submit">Create Account</button>
+      <button class="btn" type="submit">Submit Application</button>
     </form>
+    {% endif %}
   </div>
 
   <p style="text-align:center;margin-top:16px;font-size:14px;color:#999;">
-    Want to teach French? <a href="{% url 'apply_teacher' %}" style="color:var(--blue);font-weight:600;text-decoration:none;">Apply here</a>
+    <a href="{% url 'login' %}" style="color:var(--blue);font-weight:600;text-decoration:none;">Back to login</a>
   </p>
 
 </div>

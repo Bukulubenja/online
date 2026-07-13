@@ -1,6 +1,4 @@
 from django.contrib.auth import authenticate
-from django.contrib.auth.password_validation import validate_password
-from django.core.exceptions import ValidationError
 from rest_framework.authtoken.models import Token
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny, IsAuthenticated
@@ -8,6 +6,7 @@ from rest_framework.response import Response
 
 from enrollments.models import LessonProgress
 from .models import User
+from .services import AccountCreationError, create_student_account, create_teacher_application
 
 
 def user_json(user):
@@ -18,6 +17,7 @@ def user_json(user):
         'full_name': f'{user.first_name} {user.last_name}'.strip(),
         'phone': user.phone,
         'role': user.role,
+        'is_superuser': user.is_superuser,
         'current_level': user.current_level,
         'current_level_display': user.get_current_level_display(),
     }
@@ -33,38 +33,32 @@ def api_register(request):
     current_level = (data.get('current_level') or '').strip()
     password = data.get('password') or ''
 
-    if not email or not password:
-        return Response({'detail': 'Email and password are required.'}, status=400)
-
-    if User.objects.filter(email=email).exists():
-        return Response({'detail': 'An account with this email already exists.'}, status=400)
-
     try:
-        validate_password(password)
-    except ValidationError as e:
+        user = create_student_account(
+            email, password, full_name=full_name, phone=phone, current_level=current_level,
+        )
+    except AccountCreationError as e:
         return Response({'detail': ' '.join(e.messages)}, status=400)
 
-    username = email.split('@')[0]
-    base_username = username
-    suffix = 1
-    while User.objects.filter(username=username).exists():
-        username = f'{base_username}{suffix}'
-        suffix += 1
-
-    first_name = full_name.split(' ')[0] if full_name else ''
-    last_name = ' '.join(full_name.split(' ')[1:]) if full_name else ''
-
-    user = User.objects.create_user(
-        username=username,
-        email=email,
-        password=password,
-        first_name=first_name,
-        last_name=last_name,
-        phone=phone,
-        current_level=current_level,
-    )
     token, _ = Token.objects.get_or_create(user=user)
     return Response({'token': token.key, 'user': user_json(user)}, status=201)
+
+
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def api_apply_teacher(request):
+    data = request.data
+    full_name = (data.get('full_name') or '').strip()
+    email = (data.get('email') or '').strip()
+    phone = (data.get('phone') or '').strip()
+    password = data.get('password') or ''
+
+    try:
+        create_teacher_application(email, password, full_name=full_name, phone=phone)
+    except AccountCreationError as e:
+        return Response({'detail': ' '.join(e.messages)}, status=400)
+
+    return Response({'detail': 'Application submitted. It is pending Main Admin review.'}, status=201)
 
 
 @api_view(['POST'])
@@ -74,6 +68,8 @@ def api_login(request):
     password = request.data.get('password') or ''
     user = authenticate(request, username=username, password=password)
     if user is None:
+        if User.objects.filter(username=username, is_active=False, role='teacher').exists():
+            return Response({'detail': 'Your instructor application is pending review.'}, status=400)
         return Response({'detail': 'Invalid username or password.'}, status=400)
     token, _ = Token.objects.get_or_create(user=user)
     return Response({'token': token.key, 'user': user_json(user)})
