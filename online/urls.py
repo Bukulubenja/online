@@ -36,6 +36,7 @@ api_urlpatterns = [
     path('schedule/book/<int:session_id>/', schedules_api.api_book_session, name='api_book_session'),
     path('schedule/cancel/<int:booking_id>/', schedules_api.api_cancel_booking, name='api_cancel_booking'),
     path('schedule/teacher/', schedules_api.api_teacher_schedule, name='api_teacher_schedule'),
+    path('schedule/teacher/courses/', schedules_api.api_teacher_courses, name='api_teacher_courses'),
     path('schedule/teacher/new/', schedules_api.api_create_session, name='api_create_session'),
 
     path('courses/<slug:slug>/checkout/', payments_api.api_checkout, name='api_checkout'),

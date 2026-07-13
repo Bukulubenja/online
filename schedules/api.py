@@ -103,6 +103,19 @@ def api_teacher_schedule(request):
     return Response(rows)
 
 
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def api_teacher_courses(request):
+    if not _teacher_check(request.user):
+        return Response({'detail': 'Teacher access only.'}, status=403)
+
+    courses = Course.objects.filter(instructor=request.user)
+    return Response([
+        {'id': c.id, 'title': c.title, 'slug': c.slug, 'level': c.level}
+        for c in courses
+    ])
+
+
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def api_create_session(request):
