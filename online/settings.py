@@ -12,6 +12,9 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 
 from pathlib import Path
 import os
+
+import dj_database_url
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -20,12 +23,33 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-5s)@b*jr-wyl))!ej_7*2z#_j+6u_t_nh4@ge-n6r7@3#td*i_'
+# Falls back to the old hardcoded dev key only when SECRET_KEY isn't set —
+# always set a real one via env var in production.
+SECRET_KEY = os.environ.get(
+    'SECRET_KEY', 'django-insecure-5s)@b*jr-wyl))!ej_7*2z#_j+6u_t_nh4@ge-n6r7@3#td*i_'
+)
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DEBUG', 'True') == 'True'
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    h.strip() for h in os.environ.get(
+        'ALLOWED_HOSTS', '127.0.0.1,localhost,192.168.18.3,10.0.2.2'
+    ).split(',') if h.strip()
+]
+
+# Railway injects this at runtime with the service's public domain — trust it
+# automatically so we don't have to hardcode the generated *.up.railway.app host.
+_railway_domain = os.environ.get('RAILWAY_PUBLIC_DOMAIN')
+if _railway_domain:
+    ALLOWED_HOSTS.append(_railway_domain)
+    CSRF_TRUSTED_ORIGINS = [f'https://{_railway_domain}']
+
+# Dev-only: the Expo web preview runs on a different origin/port than Django,
+# so browser fetches need CORS allowed. Native (iOS/Android) requests aren't
+# subject to CORS at all — this only matters for `expo start --web`, so it's
+# safe to leave off by default once DEBUG is False.
+CORS_ALLOW_ALL_ORIGINS = os.environ.get('CORS_ALLOW_ALL_ORIGINS', str(DEBUG)) == 'True'
 
 
 # Application definition
@@ -38,6 +62,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'rest_framework.authtoken',
+    'corsheaders',
     'web',
     'user',
     'courses',
@@ -51,6 +77,16 @@ INSTALLED_APPS = [
 
 AUTH_USER_MODEL = 'user.User'
 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.AllowAny',
+    ],
+}
+
 AUTHENTICATION_BACKENDS = [
     'user.backends.EmailOrUsernameBackend',
     'django.contrib.auth.backends.ModelBackend',
@@ -58,6 +94,8 @@ AUTHENTICATION_BACKENDS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -89,16 +127,23 @@ WSGI_APPLICATION = 'online.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'online',
-        'USER': 'postgres',
-        'PASSWORD': 'Seetaboy@1',
-        'HOST': 'localhost',
-        'PORT': '9999',
+# Railway (and most hosts) inject a DATABASE_URL env var for the provisioned
+# Postgres instance — fall back to the local dev database when it's not set.
+if os.environ.get('DATABASE_URL'):
+    DATABASES = {
+        'default': dj_database_url.config(conn_max_age=600, ssl_require=not DEBUG),
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': 'online',
+            'USER': 'postgres',
+            'PASSWORD': 'Seetaboy@1',
+            'HOST': 'localhost',
+            'PORT': '9999',
+        }
+    }
 
 
 # Password validation
@@ -141,3 +186,12 @@ STATICFILES_DIRS = [BASE_DIR / 'static',]
 MEDIA_ROOT = BASE_DIR / 'media'
 MEDIA_URL = '/media/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+STORAGES = {
+    'default': {
+        'BACKEND': 'django.core.files.storage.FileSystemStorage',
+    },
+    'staticfiles': {
+        'BACKEND': 'whitenoise.storage.CompressedManifestStaticFilesStorage',
+    },
+}
